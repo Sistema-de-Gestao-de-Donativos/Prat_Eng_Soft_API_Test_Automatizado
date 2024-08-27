@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.http.HttpStatus;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.service.ExemploService;
@@ -26,6 +28,8 @@ public class ExemploTestCase {
 
 
     @Test
+    @DisplayName("Exemplo de teste")
+    @Tag("Regressao")	
     public void testExemplo(){
     pathParams.put("nome do parametro", "valor do parametro"); //add os parametros que o endpoint precisa
 
