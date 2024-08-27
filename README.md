@@ -1,1 +1,3 @@
-# Prat_Eng_Soft_API_Test_Automatizado
+# Projeto para teste Automatizado de API
+- Gradle
+- Como rodar: basta fazer o comando gradlew task
