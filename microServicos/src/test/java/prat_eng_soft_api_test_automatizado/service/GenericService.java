@@ -22,6 +22,27 @@ public class GenericService {
                 .setRelaxedHTTPSValidation();
     }
 
+    public Response get() {
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .filter(new AllureRestAssured())
+                .log().all()
+                .get();
+        return resposta;
+    }
+
+    public Response get(Map<String, Object> queryParams) {
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .queryParams(queryParams)
+                .filter(new AllureRestAssured())
+                .log().all()
+                .get();
+        return resposta;
+    }
+
     public Response get(String rota, Map<String, Object> pathParams) {
 
         Response resposta = RestAssured
@@ -44,6 +65,18 @@ public class GenericService {
                 .filter(new AllureRestAssured())
                 .log().all()
                 .get(rota);
+        return resposta;
+    }
+
+    public Response post(Object body) {
+
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .body(body)
+                .filter(new AllureRestAssured())
+                .log().all()
+                .post();
         return resposta;
     }
 
