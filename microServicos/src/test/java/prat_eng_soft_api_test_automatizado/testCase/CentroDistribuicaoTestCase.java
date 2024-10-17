@@ -20,7 +20,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
 
     public CentroDistribuicaoTestCase() {
-        super("http://localhost:8080", "/v1/cds");
+        super("/v1/cds");
         genericValidation = new GenericValidation();
     }
 
@@ -31,29 +31,29 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
         Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("ListarAbrigos"));
+        genericValidation.validarContrato(ContratoManager.getContrato("ListarCDs"));
     }
 
     @Test
-    @DisplayName("Ms de Centro Distribuição = Listar CDs pelo código")
+    @DisplayName("Ms de Centro Distribuição = Listar CD pelo código")
     @Tag("Regressao")
     public void listarCDsPeloCodigo() {
-        queryParams.put("codAbrigo", 2);
+        queryParams.put("codCD", 1);
         Response resposta = genericService.get(queryParams);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("ListarAbrigosCodigoOuNome"));
+        genericValidation.validarContrato(ContratoManager.getContrato("ListarCDCodigoOuNome"));
     }
 
     @Test
     @DisplayName("Ms de Centro Distribuição = Listar CDs pelo nome")
     @Tag("Regressao")
     public void listarCDsPeloNome() {
-        queryParams.put("nomeAbrigo", "New Haley Licensed Rubber Table");
+        queryParams.put("nameCD", "Cho-Gath");
         Response resposta = genericService.get(queryParams);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("ListarAbrigosCodigoOuNome"));
+        genericValidation.validarContrato(ContratoManager.getContrato("ListarCDCodigoOuNome"));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
         Response resposta = genericService.post(centroDistribuicaoDTO);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("IncluirAbrigo"));
+        genericValidation.validarContrato(ContratoManager.getContrato("IncluirCD"));
     }
 
     //Falta incluir os testes de cenaŕio de erro

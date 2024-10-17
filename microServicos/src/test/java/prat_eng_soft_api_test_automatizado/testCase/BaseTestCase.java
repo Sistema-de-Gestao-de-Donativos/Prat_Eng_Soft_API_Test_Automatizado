@@ -10,10 +10,10 @@ public class BaseTestCase {
     protected Map<String, Object> queryParams;
     protected GenericService genericService;
 
-    public BaseTestCase(String baseUri, String basePath ) {
+    public BaseTestCase( String basePath ) {
         pathParams = new HashMap<>();
         queryParams = new HashMap<>();
-        genericService = new GenericService(baseUri, basePath);
+        genericService = new GenericService("http://localhost:8080", basePath);
     }
 
 }

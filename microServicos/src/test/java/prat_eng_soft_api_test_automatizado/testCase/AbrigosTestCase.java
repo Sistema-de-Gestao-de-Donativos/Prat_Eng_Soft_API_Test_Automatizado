@@ -20,7 +20,7 @@ public class AbrigosTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
 
     public AbrigosTestCase() {
-        super("http://localhost:8080", "/v1/abrigos");
+        super("/v1/abrigos");
         genericValidation = new GenericValidation();
     }
 
@@ -38,7 +38,7 @@ public class AbrigosTestCase extends BaseTestCase {
     @DisplayName("Ms de Abrigos = Listar abrigo pelo código")
     @Tag("Regressao")
     public void listarAbrigoPeloCodigo() {
-        queryParams.put("codAbrigo", 2);
+        queryParams.put("codAbrigo", 1);
         Response resposta = genericService.get(queryParams);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -49,7 +49,7 @@ public class AbrigosTestCase extends BaseTestCase {
     @DisplayName("Ms de Abrigos = Listar abrigo pelo nome")
     @Tag("Regressao")
     public void listarAbrigoPeloNome() {
-        queryParams.put("nomeAbrigo", "New Haley Licensed Rubber Table");
+        queryParams.put("nomeAbrigo", "Lee Sin");
         Response resposta = genericService.get(queryParams);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -73,4 +73,15 @@ public class AbrigosTestCase extends BaseTestCase {
     }
 
     //Falta incluir os testes de cenaŕio de erro
+    @Test
+    @DisplayName("Ms de Abrigos = Buscar Abrigo que não existe pelo código")
+    @Tag("Regressao")
+    public void listarAbrigoInexistentePeloCodigo() {
+        queryParams.put("codAbrigo", 999999);
+        Response resposta = genericService.get(queryParams);
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_NOT_FOUND);
+
+      //  genericValidation.validarContrato(ContratoManager.getContrato("ListarAbrigosCodigoOuNome"));
+    }
 }
