@@ -20,7 +20,7 @@ public class AbrigosTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
 
     public AbrigosTestCase() {
-        super("/v1/abrigos");
+        super("http://localhost:8080", "v1/abrigos");
         genericValidation = new GenericValidation();
     }
 

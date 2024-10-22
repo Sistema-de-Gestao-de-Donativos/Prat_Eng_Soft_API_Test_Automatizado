@@ -20,7 +20,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
 
     public CentroDistribuicaoTestCase() {
-        super("/v1/cds");
+        super("http://localhost:8080","/v1/cds");
         genericValidation = new GenericValidation();
     }
 
