@@ -6,6 +6,9 @@
  */
 
 plugins {
+    id("java")
+    id("io.qameta.allure") version "2.12.0"
+    id("io.qameta.allure-report") version "2.12.0"
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
@@ -17,60 +20,65 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation(libs.junit.jupiter)
+    implementation(libs.junit.jupiter)
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // This dependency is used by the application.
     implementation(libs.guava)
- 
+
     // https://mvnrepository.com/artifact/org.freemarker/freemarker
-    testImplementation("org.freemarker:freemarker:2.3.33")
+    implementation("org.freemarker:freemarker:2.3.33")
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
+    implementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
+    implementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
 
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
-    testImplementation("org.hamcrest:hamcrest-all:1.3")
+    implementation("org.hamcrest:hamcrest-all:1.3")
 
     // https://mvnrepository.com/artifact/io.rest-assured/rest-assured
-    testImplementation("io.rest-assured:rest-assured:5.5.0")
+    implementation("io.rest-assured:rest-assured:5.5.0")
 
     // https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator
-    testImplementation("io.rest-assured:json-schema-validator:5.5.0")
+    implementation("io.rest-assured:json-schema-validator:5.5.0")
 
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
-    testImplementation("io.qameta.allure:allure-junit5:2.29.0")
+    implementation("io.qameta.allure:allure-junit5:2.29.0")
     
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-attachments
-    testImplementation("io.qameta.allure:allure-attachments:2.29.0")
+    implementation("io.qameta.allure:allure-attachments:2.29.0")
 
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-rest-assured
-    testImplementation("io.qameta.allure:allure-rest-assured:2.29.0")
+    implementation("io.qameta.allure:allure-rest-assured:2.29.0")
 
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-attachments
-    testImplementation("io.qameta.allure:allure-attachments:2.28.1")
+    implementation("io.qameta.allure:allure-attachments:2.28.1")
     
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-java-commons
-    testImplementation("io.qameta.allure:allure-java-commons:2.29.0")
+    implementation("io.qameta.allure:allure-java-commons:2.29.0")
     
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite-engine
-    testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.3")
+    implementation("org.junit.platform:junit-platform-suite-engine:1.10.3")
     
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite
-    testImplementation("org.junit.platform:junit-platform-suite:1.10.3")
+    implementation("org.junit.platform:junit-platform-suite:1.10.3")
     
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite-api
-    testImplementation("org.junit.platform:junit-platform-suite-api:1.10.3")
+    implementation("org.junit.platform:junit-platform-suite-api:1.10.3")
     
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
-    testImplementation("org.junit.platform:junit-platform-runner:1.10.0")
+    implementation("org.junit.platform:junit-platform-runner:1.10.0")
+
+
+    // https://mvnrepository.com/artifact/com.aventstack/extentreports
+    implementation("com.aventstack:extentreports:5.0.9")
 
     // https://mvnrepository.com/artifact/com.github.javafaker/javafaker
     testImplementation("com.github.javafaker:javafaker:1.0.2")
+
 
 }
 
@@ -81,10 +89,29 @@ java {
     }
 }
 
-application {
+application { 
 }
 
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
+
+tasks.test{
     useJUnitPlatform()
+    include("**/RegressaoTestSuite.class")
 }
+
+tasks.register("generateAllureReport") {
+    dependsOn(tasks.test)
+    val inputPath = "${projectDir}/build/allure-results"
+    val outputPath = "${projectDir}/build/allure-report"
+    
+    doLast {
+        exec {
+            commandLine("cmd", "/c", "allure", "generate", inputPath,"--single-file", "--clean", "-o", outputPath)
+        }
+    }
+}
+
+tasks.register<Delete>("cleanAllureResults") {
+    description = "Limpa os resultados dos testes na pasta allure-results."
+    group = "cleaning"
+ delete(file("build/allure-results"))
+ }
