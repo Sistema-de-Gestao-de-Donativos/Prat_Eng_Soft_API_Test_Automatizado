@@ -29,7 +29,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Centro Distribuição = Listar todos os CDs")
+    @DisplayName("Micro Serviço de Centro Distribuição = Listar todos os CDs")
     @Tag("Regressao")
     @Order(1)
     public void listarTodosCDs() {
@@ -40,7 +40,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Centro Distribuição = Listar CD pelo código")
+    @DisplayName("Micro Serviço de Centro Distribuição = Listar CD pelo código")
     @Tag("Regressao")
     @Order(2)
     public void listarCDsPeloCodigo() {
@@ -52,7 +52,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Centro Distribuição = Listar CDs pelo nome")
+    @DisplayName("Micro Serviço de Centro Distribuição = Listar CDs pelo nome")
     @Tag("Regressao")
     @Order(3)
     public void listarCDsPeloNome() {
@@ -64,7 +64,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Centro Distribuição = Incluir CDs")
+    @DisplayName("Micro Serviço de Centro Distribuição = Incluir CDs")
     @Tag("Regressao")
     @Order(4)
     public void adicionarCD() {

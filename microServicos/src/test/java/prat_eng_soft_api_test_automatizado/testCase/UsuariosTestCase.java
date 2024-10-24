@@ -30,7 +30,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Incluir Usuario Voluntario")
+    @DisplayName("Micro Serviço de Usuarios = Incluir Usuario Voluntario")
     @Tag("Regressao")
     @Order(1)
     public void incluirUsuarioVoluntario() {
@@ -51,7 +51,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Incluir Usuario Admin CD")
+    @DisplayName("Micro Serviço de Usuarios = Incluir Usuario Admin CD")
     @Tag("Regressao")
     @Order(2)
     public void incluirUsuarioAdminCD() {
@@ -72,7 +72,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Incluir Usuario Admin Abrigo")
+    @DisplayName("Micro Serviço de Usuarios = Incluir Usuario Admin Abrigo")
     @Tag("Regressao")
     @Order(3)
     public void incluirUsuarioAdminAbrigo() {
@@ -93,7 +93,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Incluir Usuario Super Admin")
+    @DisplayName("Micro Serviço de Usuarios = Incluir Usuario Super Admin")
     @Tag("Regressao")
     @Order(4)
     public void incluirUsuarioSuperAdmin() {
@@ -114,7 +114,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Excluir Usuario")
+    @DisplayName("Micro Serviço de Usuarios = Excluir Usuario")
     @Tag("Regressao")
     @Order(5)
     public void excluirUsuario() {
@@ -125,7 +125,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Listar todos os Usuarios")
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios")
     @Tag("Regressao")
     @Order(6)
     public void listarTodosUsuarios() {
@@ -136,7 +136,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Listar Usuario pelo UserId")
+    @DisplayName("Micro Serviço de Usuarios = Listar Usuario pelo UserId")
     @Tag("Regressao")
     @Order(7)
     public void listarUsuarioPeloUserId() {
@@ -148,7 +148,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Usuarios = Listar Usuario pelo Papel( Voluntario, AdminCD, AdminAbrigo, SuperAdmin)")
+    @DisplayName("Micro Serviço de Usuarios = Listar Usuario pelo Papel( Voluntario, AdminCD, AdminAbrigo, SuperAdmin)")
     @Tag("Regressao")
     @Order(8)
     public void listarUsuarioPeloPapel() {

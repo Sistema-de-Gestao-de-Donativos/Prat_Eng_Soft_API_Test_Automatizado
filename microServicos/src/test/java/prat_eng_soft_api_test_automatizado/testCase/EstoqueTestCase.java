@@ -25,12 +25,12 @@ public class EstoqueTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
 
     public EstoqueTestCase() {
-        super("http://127.0.0.1:8080", "v1/stock");
+        super("http://127.0.0.1:8000", "v1/stock");
         genericValidation = new GenericValidation();
     }
 
     @Test
-    @DisplayName("Ms de Estoque = Incluir nova entrada de Itens no Estoque")
+    @DisplayName("Micro Serviço de Estoque = Incluir nova entrada de Itens no Estoque")
     @Tag("Regressao")
     @Order(1)
     public void incluirNovaEntradaEstoque() {
@@ -50,7 +50,7 @@ public class EstoqueTestCase extends BaseTestCase {
         List<EstoqueEntradaDTO> listaEntradas = new ArrayList<>();
         listaEntradas.add(estoqueEntradaDTO);
 
-        pathParams.put("codCd", 10);
+        pathParams.put("codCd", 1);
 
         Response resposta = genericService.post("{codCd}", pathParams, listaEntradas);
         genericValidation.setResponse(resposta);
@@ -59,7 +59,7 @@ public class EstoqueTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Estoque = Consultar estoque de um determinado Centro de Distribuição")
+    @DisplayName("Micro Serviço de Estoque = Consultar estoque de um determinado Centro de Distribuição")
     @Tag("Regressao")
     @Order(2)
     public void consultaEstoqueCD() {
@@ -73,7 +73,7 @@ public class EstoqueTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Estoque = Saida de um Item de um Centro de Distribuição")
+    @DisplayName("Micro Serviço de Estoque = Saida de um Item de um Centro de Distribuição")
     @Tag("Regressao")
     @Order(3)
     public void saidaEstoqueCD() {
@@ -89,7 +89,7 @@ public class EstoqueTestCase extends BaseTestCase {
 
 
     @Test
-    @DisplayName("Ms de Estoque = Saida de um Item de um Centro de Distribuição")
+    @DisplayName("Micro Serviço de Estoque = Saida de um Item de um Centro de Distribuição")
     @Tag("Regressao")
     @Order(4)
     public void consultaQuantidadeItens() {

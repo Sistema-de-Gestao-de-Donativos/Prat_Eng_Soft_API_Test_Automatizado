@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "idDoacao": {
+            "type": "integer"
+          },
+          "codCD": {
+            "type": "integer"
+          },
+          "idDoador": {
+            "type": "integer"
+          },
+          "idItem": {
+            "type": "string"
+          },
+          "qtd": {
+            "type": "integer"
+          },
+          "dataDoacao": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "idDoacao",
+          "codCD",
+          "idDoador",
+          "idItem",
+          "qtd",
+          "dataDoacao"
+        ]
+      }
+    ]
+  }

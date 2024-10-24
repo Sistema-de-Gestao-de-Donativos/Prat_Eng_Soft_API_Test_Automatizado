@@ -2,7 +2,6 @@ package prat_eng_soft_api_test_automatizado.testCase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,28 +14,28 @@ import org.junit.jupiter.api.Test;
 import com.github.javafaker.Faker;
 
 import io.restassured.response.Response;
+import prat_eng_soft_api_test_automatizado.DTO.DoacaoDTO;
 import prat_eng_soft_api_test_automatizado.DTO.DoacaoDoadorDTO;
 import prat_eng_soft_api_test_automatizado.DTO.DoacaoItemDTO;
-import prat_eng_soft_api_test_automatizado.DTO.EstoqueEntradaDTO;
+import prat_eng_soft_api_test_automatizado.DTO.DoacaoItensDTO;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 import prat_eng_soft_api_test_automatizado.validation.GenericValidation;
 
 public class DoacaoTestCase extends BaseTestCase {
-    
+
     GenericValidation genericValidation;
-    
+
     public DoacaoTestCase() {
-        super("http://localhost:8080", "v1/");
+        super("http://localhost:8082", "v1/");
         genericValidation = new GenericValidation();
     }
 
     @Test
-    @DisplayName("Ms de Doacoes = ICraicao de um novo ietm")
+    @DisplayName("Micro Serviço de Doação = Criação de um novo item")
     @Tag("Regressao")
     @Order(1)
     public void criarItem() {
         Faker faker = new Faker(new Locale("pt-BR"));
-
 
         DoacaoItemDTO doacaoItemDTO = new DoacaoItemDTO(
                 faker.number().numberBetween(1, 1000),
@@ -50,9 +49,9 @@ public class DoacaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Doacoes = Inclusao de um novo doador")
+    @DisplayName("Micro Serviço de Doação = Inclusão de um novo doador")
     @Tag("Regressao")
-    @Order(1)
+    @Order(2)
     public void criarDoador() {
         Faker faker = new Faker(new Locale("pt-BR"));
 
@@ -69,9 +68,9 @@ public class DoacaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Doacoes = Busca de um  doador pelo Email")
+    @DisplayName("Micro Serviço de Doação = Busca de um doador pelo Email")
     @Tag("Regressao")
-    @Order(1)
+    @Order(3)
     public void buscarDoadorPeloEmail() {
         queryParams.put("emailRequest", "feliciano.alvares@hotmail.com");
         String body = "{\"email\": \"feliciano.alvares@hotmail.com\"}";
@@ -82,18 +81,44 @@ public class DoacaoTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Doacoes = Envio de uma Doacao")
+    @DisplayName("Micro Serviço de Doação = Envio de uma Doação")
     @Tag("Regressao")
-    @Order(1)
+    @Order(4)
     public void enviarDoacao() {
-        queryParams.put("emailRequest", "feliciano.alvares@hotmail.com");
-        String body = "{\"email\": \"feliciano.alvares@hotmail.com\"}";
-        Response resposta = genericService.get("doador", body);
+        Faker faker = new Faker(new Locale("pt-BR"));
+
+        DoacaoItensDTO doacaoItensDTO = new DoacaoItensDTO(
+                faker.food().ingredient(),
+                new SimpleDateFormat("dd/MM/yyyy").format(faker.date().birthday()),
+                faker.food().measurement(),
+                faker.number().numberBetween(1, 1000),
+                faker.food().spice());
+
+        List<DoacaoItensDTO> itens = new ArrayList<>();
+        itens.add(doacaoItensDTO);
+
+        DoacaoDTO doacaoDTO = new DoacaoDTO(
+                2,
+                faker.number().numberBetween(1, 1000),
+                itens);
+
+        Response resposta = genericService.post("doacao", pathParams, doacaoDTO);
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("criarDoador"));
+        genericValidation.validarContrato(ContratoManager.getContrato("enviarDoacao"));
     }
 
-
+    @Test
+    @DisplayName("Micro Serviço de Doação = Busca de uma Doação pelo Id")
+    @Tag("Regressao")
+    @Order(5)
+    public void buscarDoacaoPeloId() {
+        queryParams.put("emailRequest", "feliciano.alvares@hotmail.com");
+        String body = "{\"idDoacao\": 3}";
+        Response resposta = genericService.get("doacao", body);
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("buscarDoacaoPeloId"));
+    }
 
 }
