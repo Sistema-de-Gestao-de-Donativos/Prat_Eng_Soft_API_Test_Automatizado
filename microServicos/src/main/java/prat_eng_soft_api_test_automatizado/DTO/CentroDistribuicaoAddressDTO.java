@@ -66,6 +66,10 @@ public class CentroDistribuicaoAddressDTO {
         this.number = number;
     }
 
-    
+    @Override
+    public String toString() {
+        return "CentroDistribuicaoAddressDTO [city=" + city + ", country=" + country + ", neighborhood=" + neighborhood
+                + ", number=" + number + ", state=" + state + ", street=" + street + "]";
+    }
 
 }

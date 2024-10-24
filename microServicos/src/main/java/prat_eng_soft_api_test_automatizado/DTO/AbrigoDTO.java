@@ -45,5 +45,10 @@ public class AbrigoDTO {
         this.address = address;
     }
 
+    @Override
+    public String toString() {
+        return "AbrigoDTO [address=" + address + ", email=" + email + ", name=" + name + ", phone=" + phone + "]";
+    }
+
     
 }

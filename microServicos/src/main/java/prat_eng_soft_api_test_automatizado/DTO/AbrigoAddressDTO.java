@@ -65,4 +65,10 @@ public class AbrigoAddressDTO {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return "AbrigoAddressDTO [city=" + city + ", country=" + country + ", neighborhood=" + neighborhood + ", number="
+                + number + ", state=" + state + ", street=" + street + "]";
+    }
+
 }

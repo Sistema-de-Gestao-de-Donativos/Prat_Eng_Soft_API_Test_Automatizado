@@ -45,4 +45,9 @@ public class CentroDistribuicaoDTO {
         this.address = address;
     }
 
+    @Override
+    public String toString() {
+        return "CentroDistribuicaoDTO [address=" + address + ", email=" + email + ", name=" + name + ", phone=" + phone + "]";
+    }
+
 }

@@ -75,6 +75,12 @@ public class UsuariosDTO {
         this.cpf = cpf;
     }
 
+    @Override
+    public String toString() {
+        return "UsuariosDTO [address=" + address + ", codEntidade=" + codEntidade + ", cpf=" + cpf + ", email=" + email
+                + ", name=" + name + ", phone=" + phone + ", role=" + role + "]";
+    }
+
     
 
 }
