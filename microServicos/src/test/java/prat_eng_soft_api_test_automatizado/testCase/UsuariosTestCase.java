@@ -3,7 +3,7 @@ package prat_eng_soft_api_test_automatizado.testCase;
 import java.util.Locale;
 
 import org.apache.http.HttpStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 
