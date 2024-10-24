@@ -2,6 +2,8 @@ package prat_eng_soft_api_test_automatizado.service;
 
 import java.util.Map;
 
+import com.google.common.base.MoreObjects;
+
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -49,6 +51,18 @@ public class GenericService {
                 .given()
                 .spec(requestSpecBuilder.build())
                 .pathParams(pathParams)
+                .filter(new AllureRestAssured())
+                .log().all()
+                .get(rota);
+        return resposta;
+    }
+
+    public Response get(String rota, Object body) {
+
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .body(body)
                 .filter(new AllureRestAssured())
                 .log().all()
                 .get(rota);
