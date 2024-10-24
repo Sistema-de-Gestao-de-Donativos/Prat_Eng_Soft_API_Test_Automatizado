@@ -93,12 +93,38 @@ public class GenericService {
         return resposta;
     }
 
+    public Response post(Map<String, Object> pathParams, Object body) {
+
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .pathParams(pathParams)
+                .body(body)
+                .filter(new AllureRestAssured())
+                .log().all()
+                .post();
+        return resposta;
+    }
+
     public Response delete(String rota, Map<String, Object> pathParams) {
 
         Response resposta = RestAssured
                 .given()
                 .spec(requestSpecBuilder.build())
                 .pathParams(pathParams)
+                .filter(new AllureRestAssured())
+                .log().all()
+                .delete(rota);
+        return resposta;
+    }
+
+    public Response delete(String rota, Map<String, Object> pathParams, Map<String, Object> queryParams) {
+
+        Response resposta = RestAssured
+                .given()
+                .spec(requestSpecBuilder.build())
+                .pathParams(pathParams)
+                .queryParams(queryParams)
                 .filter(new AllureRestAssured())
                 .log().all()
                 .delete(rota);
