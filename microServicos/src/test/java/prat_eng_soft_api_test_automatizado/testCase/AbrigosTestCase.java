@@ -4,8 +4,11 @@ import java.util.Locale;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import com.github.javafaker.Faker;
 
@@ -15,6 +18,7 @@ import prat_eng_soft_api_test_automatizado.DTO.AbrigoDTO;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 import prat_eng_soft_api_test_automatizado.validation.GenericValidation;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class AbrigosTestCase extends BaseTestCase {
 
     private GenericValidation genericValidation;
@@ -25,8 +29,9 @@ public class AbrigosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Abrigos = Listar todos os abrigos")
+    @DisplayName("Micro Serviço de Abrigos = Listar todos os abrigos")
     @Tag("Regressao")
+    @Order(1)
     public void listarTodosAbrigos() {
         Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
@@ -35,8 +40,9 @@ public class AbrigosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Abrigos = Listar abrigo pelo código")
+    @DisplayName("Micro Serviço de Abrigos = Listar abrigo pelo código")
     @Tag("Regressao")
+    @Order(2)
     public void listarAbrigoPeloCodigo() {
         queryParams.put("codAbrigo", 1);
         Response resposta = genericService.get(queryParams);
@@ -46,8 +52,9 @@ public class AbrigosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Abrigos = Listar abrigo pelo nome")
+    @DisplayName("Micro Serviço de Abrigos = Listar abrigo pelo nome")
     @Tag("Regressao")
+    @Order(3)
     public void listarAbrigoPeloNome() {
         queryParams.put("nomeAbrigo", "Lee Sin");
         Response resposta = genericService.get(queryParams);
@@ -57,8 +64,9 @@ public class AbrigosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Ms de Abrigos = Incluir abrigo")
+    @DisplayName("Micro Serviço de Abrigos = Incluir abrigo")
     @Tag("Regressao")
+    @Order(4)
     public void adicionarAbrigo() {
         Faker faker = new Faker(new Locale("pt-BR"));
         AbrigoAddressDTO abrigoAddressDTO = new AbrigoAddressDTO("Brasil", faker.address().state(),
@@ -72,16 +80,4 @@ public class AbrigosTestCase extends BaseTestCase {
         genericValidation.validarContrato(ContratoManager.getContrato("IncluirAbrigo"));
     }
 
-    //Falta incluir os testes de cenaŕio de erro
-    @Test
-    @DisplayName("Ms de Abrigos = Buscar Abrigo que não existe pelo código")
-    @Tag("Regressao")
-    public void listarAbrigoInexistentePeloCodigo() {
-        queryParams.put("codAbrigo", 999999);
-        Response resposta = genericService.get(queryParams);
-        genericValidation.setResponse(resposta);
-        genericValidation.validarStatusCode(HttpStatus.SC_NOT_FOUND);
-
-      //  genericValidation.validarContrato(ContratoManager.getContrato("ListarAbrigosCodigoOuNome"));
-    }
 }

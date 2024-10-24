@@ -4,7 +4,10 @@ import java.util.Locale;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 
 import com.github.javafaker.Faker;
@@ -16,6 +19,7 @@ import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 import prat_eng_soft_api_test_automatizado.utils.GeradorCpf;
 import prat_eng_soft_api_test_automatizado.validation.GenericValidation;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class UsuariosTestCase extends BaseTestCase {
 
     private GenericValidation genericValidation;
@@ -28,6 +32,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Incluir Usuario Voluntario")
     @Tag("Regressao")
+    @Order(1)
     public void incluirUsuarioVoluntario() {
         Faker faker = new Faker(new Locale("pt-BR"));
         UsuariosAddressDTO usuariosAddressDTO = new UsuariosAddressDTO("Brasil", faker.address().state(),
@@ -48,6 +53,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Incluir Usuario Admin CD")
     @Tag("Regressao")
+    @Order(2)
     public void incluirUsuarioAdminCD() {
         Faker faker = new Faker(new Locale("pt-BR"));
         UsuariosAddressDTO usuariosAddressDTO = new UsuariosAddressDTO("Brasil", faker.address().state(),
@@ -68,6 +74,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Incluir Usuario Admin Abrigo")
     @Tag("Regressao")
+    @Order(3)
     public void incluirUsuarioAdminAbrigo() {
         Faker faker = new Faker(new Locale("pt-BR"));
         UsuariosAddressDTO usuariosAddressDTO = new UsuariosAddressDTO("Brasil", faker.address().state(),
@@ -88,6 +95,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Incluir Usuario Super Admin")
     @Tag("Regressao")
+    @Order(4)
     public void incluirUsuarioSuperAdmin() {
         Faker faker = new Faker(new Locale("pt-BR"));
         UsuariosAddressDTO usuariosAddressDTO = new UsuariosAddressDTO("Brasil", faker.address().state(),
@@ -108,6 +116,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Excluir Usuario")
     @Tag("Regressao")
+    @Order(5)
     public void excluirUsuario() {
         pathParams.put("user_id", "671723125971092b1dccd207");
         Response resposta = genericService.delete("/users/{user_id}", pathParams);
@@ -118,6 +127,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Listar todos os Usuarios")
     @Tag("Regressao")
+    @Order(6)
     public void listarTodosUsuarios() {
         Response resposta = genericService.get("users/", pathParams);
         genericValidation.setResponse(resposta);
@@ -128,6 +138,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Listar Usuario pelo UserId")
     @Tag("Regressao")
+    @Order(7)
     public void listarUsuarioPeloUserId() {
         pathParams.put("user_id", "67156701c3d61381677502e3");
         Response resposta = genericService.get("users/{user_id}", pathParams);
@@ -139,6 +150,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Ms de Usuarios = Listar Usuario pelo Papel( Voluntario, AdminCD, AdminAbrigo, SuperAdmin)")
     @Tag("Regressao")
+    @Order(8)
     public void listarUsuarioPeloPapel() {
         pathParams.put("role", "voluntario");
         pathParams.put("codEntidade", "12");
