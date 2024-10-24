@@ -110,6 +110,21 @@ tasks.register("generateAllureReport") {
     }
 }
 
+tasks.register("generateAllureReportByname") {
+    val inputPath = "${projectDir}/build/allure-results"
+    val outputPath = "${projectDir}/build/allure-report"
+    val message = project.findProperty("message") ?: "Relatório de Testes"
+
+    
+    doLast {
+        exec {
+            commandLine("cmd", "/c", "allure", "generate", inputPath,"--single-file", "--clean", "-o", outputPath, "--name", message)
+        }
+    }
+}
+
+
+
 tasks.register<Delete>("cleanAllureResults") {
     description = "Limpa os resultados dos testes na pasta allure-results."
     group = "cleaning"
