@@ -1,0 +1,76 @@
+{
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "neighborhood": {
+                "type": "string"
+              },
+              "street": {
+                "type": "string"
+              },
+              "number": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "country",
+              "state",
+              "city",
+              "neighborhood",
+              "street",
+              "number"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "codEntidade": {
+            "type": "integer"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "email",
+          "phone",
+          "role",
+          "codEntidade",
+          "cpf",
+          "_id",
+          "created_at"
+        ]
+      }
+    ]
+  }

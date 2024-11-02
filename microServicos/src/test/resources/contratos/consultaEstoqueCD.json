@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "codCd": {
+          "type": "integer"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "quantidade": {
+          "type": "integer"
+        },
+        "unidade": {
+          "type": "string"
+        },
+        "categoria": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "codCd",
+        "nome",
+        "quantidade",
+        "unidade",
+        "categoria",
+        "_id",
+        "created_at"
+      ]
+    }
+  ]
+}
