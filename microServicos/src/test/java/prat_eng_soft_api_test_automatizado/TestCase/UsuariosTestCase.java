@@ -1,7 +1,5 @@
 package prat_eng_soft_api_test_automatizado.TestCase;
 
-import java.util.Locale;
-
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -12,12 +10,9 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 
-import com.github.javafaker.Faker;
-
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.TestCase.models.Usuarios;
-import prat_eng_soft_api_test_automatizado.TestCase.models.UsuariosAddress;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
 import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
@@ -32,7 +27,7 @@ public class UsuariosTestCase extends BaseTestCase {
     private String cpf;
 
     public UsuariosTestCase() {
-        super("http://127.0.0.1:8000", "/v1");
+        super("usuario", "/v1");
         genericValidation = new GenericValidation();
         conexaoBancoDados = new ConexaoBancoDados();
     }
@@ -63,22 +58,18 @@ public class UsuariosTestCase extends BaseTestCase {
 
         Allure.description("Teste para validar a inclusão de um novo usuario Voluntario");
 
-        UsuariosAddress usuariosAddressDTO = new UsuariosAddress("Brasil", faker.address().state(),
-                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
-                faker.number().numberBetween(1, 1000));
+        Usuarios usuariosModel = Usuarios.criarUsuario(nome, cpf);
+        usuariosModel.setRole("voluntario");
 
-        Usuarios usuariosDTO = new Usuarios(nome, usuariosAddressDTO,
-                faker.internet().emailAddress(),
-                faker.phoneNumber().cellPhone(), "voluntario", faker.number().numberBetween(1, 10),
-                cpf);
+        this.genericService.setRota("/users");
+        this.genericService.setBody(usuariosModel);
 
-        Response resposta = genericService.post("/users", pathParams, usuariosDTO);
-        genericValidation.setResponse(resposta);
-        genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
-        genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
+        Response resposta = genericService.post();
+        this.genericValidation.setResponse(resposta);
+        this.genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
+        this.genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
 
-        conexaoBancoDados.encontrarUsuario(resposta.jsonPath().getString("_id"));
-
+        this.conexaoBancoDados.encontrarUsuarioId(resposta.jsonPath().getString("_id"));
     }
 
     @Test
@@ -89,22 +80,18 @@ public class UsuariosTestCase extends BaseTestCase {
         Allure.description(
                 "Teste para validar a inclusão de um novo usuario Administrador de um Centro de Distribuição");
 
-        Faker faker = new Faker(new Locale("pt-BR"));
-        UsuariosAddress usuariosAddressDTO = new UsuariosAddress("Brasil", faker.address().state(),
-                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
-                faker.number().numberBetween(1, 1000));
+        Usuarios usuariosModel = Usuarios.criarUsuario(nome, cpf);
+        usuariosModel.setRole("adminCD");
 
-        Usuarios usuariosDTO = new Usuarios(nome, usuariosAddressDTO,
-                faker.internet().emailAddress(),
-                faker.phoneNumber().cellPhone(), "adminCD", faker.number().numberBetween(1, 10),
-                cpf);
+        this.genericService.setRota("/users");
+        this.genericService.setBody(usuariosModel);
 
-        Response resposta = genericService.post("/users", pathParams, usuariosDTO);
+        Response resposta = genericService.post();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
 
-        conexaoBancoDados.encontrarUsuario(resposta.jsonPath().getString("_id"));
+        conexaoBancoDados.encontrarUsuarioId(resposta.jsonPath().getString("_id"));
 
     }
 
@@ -115,22 +102,18 @@ public class UsuariosTestCase extends BaseTestCase {
     public void incluirUsuarioAdminAbrigo() {
         Allure.description("Teste para validar a inclusão de um novo usuario Administrador de um Abrigo");
 
-        Faker faker = new Faker(new Locale("pt-BR"));
-        UsuariosAddress usuariosAddressDTO = new UsuariosAddress("Brasil", faker.address().state(),
-                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
-                faker.number().numberBetween(1, 1000));
+        Usuarios usuariosModel = Usuarios.criarUsuario(nome, cpf);
+        usuariosModel.setRole("adminAbrigo");
 
-        Usuarios usuariosDTO = new Usuarios(nome, usuariosAddressDTO,
-                faker.internet().emailAddress(),
-                faker.phoneNumber().cellPhone(), "adminAbrigo", faker.number().numberBetween(1, 10),
-                cpf);
+        this.genericService.setRota("/users");
+        this.genericService.setBody(usuariosModel);
 
-        Response resposta = genericService.post("/users", pathParams, usuariosDTO);
+        Response resposta = genericService.post();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
 
-        conexaoBancoDados.encontrarUsuario(resposta.jsonPath().getString("_id"));
+        conexaoBancoDados.encontrarUsuarioId(resposta.jsonPath().getString("_id"));
     }
 
     @Test
@@ -140,22 +123,18 @@ public class UsuariosTestCase extends BaseTestCase {
     public void incluirUsuarioSuperAdmin() {
         Allure.description("Teste para validar a inclusão de um novo usuario Super Administrador");
 
-        Faker faker = new Faker(new Locale("pt-BR"));
-        UsuariosAddress usuariosAddressDTO = new UsuariosAddress("Brasil", faker.address().state(),
-                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
-                faker.number().numberBetween(1, 1000));
+        Usuarios usuariosModel = Usuarios.criarUsuario(nome, cpf);
+        usuariosModel.setRole("superadmin");
 
-        Usuarios usuariosDTO = new Usuarios(nome, usuariosAddressDTO,
-                faker.internet().emailAddress(),
-                faker.phoneNumber().cellPhone(), "superadmin", faker.number().numberBetween(1, 10),
-                cpf);
+        this.genericService.setRota("/users");
+        this.genericService.setBody(usuariosModel);
 
-        Response resposta = genericService.post("/users", pathParams, usuariosDTO);
+        Response resposta = genericService.post();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
 
-        conexaoBancoDados.encontrarUsuario(resposta.jsonPath().getString("_id"));
+        conexaoBancoDados.encontrarUsuarioId(resposta.jsonPath().getString("_id"));
     }
 
     @Test
@@ -164,17 +143,19 @@ public class UsuariosTestCase extends BaseTestCase {
     @Order(5)
     public void excluirUsuario() {
         /** Incluindo um usuario voluntario na mão pra depois apagar ele */
-        String userId = conexaoBancoDados.incluirUsuario();
+        String userId = conexaoBancoDados.incluirUsuario("voluntario");
 
         Allure.description(
                 "Teste para validar a exclusão de um Usuario");
 
-        pathParams.put("user_id", userId);
-        Response resposta = genericService.delete("/users/{user_id}", pathParams);
+        genericService.addPathParam("user_id", userId);
+        genericService.setRota("/users/{user_id}");
+
+        Response resposta = genericService.delete();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_NO_CONTENT);
 
-        conexaoBancoDados.encontrarUsuario(userId);
+        conexaoBancoDados.encontrarUsuarioId(userId);
     }
 
     @Test
@@ -184,7 +165,73 @@ public class UsuariosTestCase extends BaseTestCase {
     public void listarTodosUsuarios() {
         Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
 
-        Response resposta = genericService.get("users/", pathParams);
+        genericService.setRota("/users/");
+
+        Response resposta = genericService.get();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios Voluntaarios")
+    @Tag("Regressao")
+    @Order(7)
+    public void listarTodosUsuariosVoluntarios() {
+        Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
+
+        genericService.addQueryParams("role", "voluntario");
+        genericService.setRota("/users/");
+
+        Response resposta = genericService.get();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios adminCD")
+    @Tag("Regressao")
+    @Order(8)
+    public void listarTodosUsuariosAdminCd() {
+        Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
+
+        genericService.addQueryParams("role", "adminCD");
+        genericService.setRota("/users/");
+
+        Response resposta = genericService.get();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios Abrigo")
+    @Tag("Regressao")
+    @Order(9)
+    public void listarTodosUsuariosAdminAbrigo() {
+        Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
+
+        genericService.addQueryParams("role", "adminAbrigo");
+        genericService.setRota("/users/");
+
+        Response resposta = genericService.get();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios super admin")
+    @Tag("Regressao")
+    @Order(10)
+    public void listarTodosUsuariossuperAdmin() {
+        Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
+
+        genericService.addQueryParams("role", "superadmin");
+        genericService.setRota("/users/");
+
+        Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
@@ -194,32 +241,36 @@ public class UsuariosTestCase extends BaseTestCase {
     @Test
     @DisplayName("Micro Serviço de Usuarios = Listar Usuario pelo UserId")
     @Tag("Regressao")
-    @Order(7)
+    @Order(11)
     public void listarUsuarioPeloUserId() {
         /** Incluindo um usuario voluntario na mão pra depois apagar ele */
-        String userId = conexaoBancoDados.incluirUsuario();
+        String userId = conexaoBancoDados.incluirUsuario("voluntario");
 
         Allure.description("Teste para validar a consulta de um usuario pelo seu Id");
 
-        pathParams.put("user_id", userId);
-        Response resposta = genericService.get("users/{user_id}", pathParams);
+        genericService.addPathParam("user_id", userId);
+        genericService.setRota("/users/{user_id}");
+
+        Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarioPeloId"));
-        conexaoBancoDados.encontrarUsuario(userId);
+        conexaoBancoDados.encontrarUsuarioId(userId);
 
     }
 
     @Test
     @DisplayName("Micro Serviço de Usuarios = Listar Usuarios pelo Papel( Voluntario, AdminCD, AdminAbrigo, SuperAdmin)")
     @Tag("Regressao")
-    @Order(8)
+    @Order(12)
     public void listarUsuarioPeloPapel() {
         Allure.description("Teste para validar a listagem de um usuario pelo seu papel");
 
-        pathParams.put("role", "voluntario");
-        pathParams.put("codEntidade", "12");
-        Response resposta = genericService.get("users/{role}/{codEntidade}", pathParams);
+        genericService.addPathParam("role", "voluntario");
+        genericService.addPathParam("codEntidade", "12");
+        genericService.setRota("/users/{role}/{codEntidade}");
+
+        Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
