@@ -1,5 +1,6 @@
 package prat_eng_soft_api_test_automatizado.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.qameta.allure.Allure;
@@ -9,14 +10,20 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+/**
+ * Classe responsavel por realizar as chamadas HTTPS utilizando o RestAssured
+ */
 public class GenericService {
 
     private RequestSpecBuilder requestSpecBuilder;
+    private Map<String, Object> pathParams = new HashMap<>();
+    private Map<String, Object> queryParams = new HashMap<>();
+    private Map<String, Object> headers = new HashMap<>();
+    private String rota = "";
+    private Object body = "";
 
     public GenericService(String baseUri, String basePath) {
-        requestSpecBuilder = new RequestSpecBuilder();
-
-        requestSpecBuilder
+        this.requestSpecBuilder = new RequestSpecBuilder()
                 .setBaseUri(baseUri)
                 .setBasePath(basePath)
                 .setContentType(ContentType.JSON)
@@ -26,144 +33,60 @@ public class GenericService {
                 .setRelaxedHTTPSValidation();
     }
 
+    public void addHeader(String key, Object value) {
+        this.headers.put(key, value);
+    }
+
+    public void addPathParam(String key, Object value) {
+        this.pathParams.put(key, value);
+    }
+
+    public void addQueryParams(String key, Object value) {
+        this.queryParams.put(key, value);
+    }
+
+    public void setRota(String rota) {
+        this.rota = rota;
+    }
+
+    public void setBody(Object body) {
+        this.body = body;
+    }
+
+    public void prepararParaNovaRequisicao() {
+        this.pathParams.clear();
+        this.queryParams.clear();
+        this.headers.clear();
+        this.body = new Object();
+    }
+
+    private Response executeRequest(String method) {
+        return Allure.step("Requisição " + method.toUpperCase() + " Realizada", () -> {
+            return RestAssured
+                    .given()
+                    .spec(this.requestSpecBuilder.build())
+                    .pathParams(this.pathParams)
+                    .queryParams(this.queryParams)
+                    .headers(this.headers)
+                    .body(this.body)
+                    .log().all()
+                    .request(method, this.rota);
+        });
+    }
+
     public Response get() {
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .log().all()
-                    .get();
-        });
+        return executeRequest("get");
     }
 
-    public Response get(Map<String, Object> queryParams) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .queryParams(queryParams)
-                    .log().all()
-                    .get();
-        });
+    public Response post() {
+        return executeRequest("post");
     }
 
-    public Response get(String rota, Map<String, Object> pathParams) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .log().all()
-                    .get(rota);
-
-        });
+    public Response put() {
+        return executeRequest("put");
     }
 
-    public Response get(String rota, Object body) {
-
-        return Allure.step("Requisição Realizada", () -> {
-
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .body(body)
-                    .log().all()
-                    .get(rota);
-
-        });
-    }
-
-    public Response get(String rota, Map<String, Object> pathParams, Map<String, Object> queryParams) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .queryParams(queryParams)
-                    .log().all()
-                    .get(rota);
-        });
-    }
-
-    public Response post(Object body) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .body(body)
-                    .log().all()
-                    .post();
-        });
-    }
-
-    public Response post(String rota, Map<String, Object> pathParams, Object body) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .body(body)
-                    .log().all()
-                    .post(rota);
-        });
-    }
-
-    public Response post(Map<String, Object> pathParams, Object body) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .body(body)
-                    .log().all()
-                    .post();
-
-        });
-
-    }
-
-    public Response delete(String rota, Map<String, Object> pathParams) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .log().all()
-                    .delete(rota);
-        });
-    }
-
-    public Response delete(String rota, Map<String, Object> pathParams, Map<String, Object> queryParams) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .queryParams(queryParams)
-                    .log().all()
-                    .delete(rota);
-
-        });
-    }
-
-    public Response put(String rota, Map<String, Object> pathParams, Object body) {
-
-        return Allure.step("Requisição Realizada", () -> {
-            return RestAssured
-                    .given()
-                    .spec(requestSpecBuilder.build())
-                    .pathParams(pathParams)
-                    .body(body)
-                    .log().all()
-                    .put(rota);
-        });
+    public Response delete() {
+        return executeRequest("delete");
     }
 }
