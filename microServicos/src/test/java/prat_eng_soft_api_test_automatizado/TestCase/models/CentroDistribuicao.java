@@ -1,5 +1,9 @@
 package prat_eng_soft_api_test_automatizado.TestCase.models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+
 public class CentroDistribuicao {
     private String name;
     private String phone;
@@ -12,6 +16,14 @@ public class CentroDistribuicao {
         this.email = email;
         this.address = address;
     }
+
+    public static CentroDistribuicao criarCentroDistribuicao() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        return new CentroDistribuicao(faker.address().cityName()+'_'+faker.address().zipCode(), faker.phoneNumber().cellPhone(), faker.internet().emailAddress(),
+                CentroDistribuicaoAddress.criarEndereco());
+    }
+
+
 
     public String getName() {
         return name;

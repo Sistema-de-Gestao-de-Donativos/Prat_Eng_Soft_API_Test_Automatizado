@@ -1,7 +1,11 @@
 package prat_eng_soft_api_test_automatizado.TestCase.models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+
 public class CentroDistribuicaoAddress {
-    
+
     private String country;
     private String state;
     private String city;
@@ -9,13 +13,22 @@ public class CentroDistribuicaoAddress {
     private String street;
     private int number;
 
-    public CentroDistribuicaoAddress(String country, String state, String city, String neighborhood, String street, int number) {
+    public CentroDistribuicaoAddress(String country, String state, String city, String neighborhood, String street,
+            int number) {
         this.country = country;
         this.state = state;
         this.city = city;
         this.neighborhood = neighborhood;
         this.street = street;
         this.number = number;
+    }
+
+    public static CentroDistribuicaoAddress criarEndereco() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        return new CentroDistribuicaoAddress("Brasil",
+                faker.address().state(),
+                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
+                faker.number().numberBetween(1, 1000));
     }
 
     public String getCountry() {
