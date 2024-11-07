@@ -1,5 +1,9 @@
 package prat_eng_soft_api_test_automatizado.TestCase.models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+
 public class Usuarios {
     private String name;
     private UsuariosAddress address;
@@ -9,7 +13,8 @@ public class Usuarios {
     private int codEntidade;
     private String cpf;
 
-    public Usuarios(String name, UsuariosAddress address, String email, String phone, String role, int codEntidade, String cpf) {
+    public Usuarios(String name, UsuariosAddress address, String email, String phone, String role, int codEntidade,
+            String cpf) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -17,6 +22,14 @@ public class Usuarios {
         this.role = role;
         this.codEntidade = codEntidade;
         this.cpf = cpf;
+    }
+
+    public static Usuarios criarUsuario(String nome, String cpf) {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        return new Usuarios(nome, UsuariosAddress.criarEndereco(),
+                faker.internet().emailAddress(),
+                faker.phoneNumber().cellPhone(), "voluntario", faker.number().numberBetween(1, 10),
+                cpf);
     }
 
     public String getName() {
@@ -80,7 +93,5 @@ public class Usuarios {
         return "UsuariosDTO [address=" + address + ", codEntidade=" + codEntidade + ", cpf=" + cpf + ", email=" + email
                 + ", name=" + name + ", phone=" + phone + ", role=" + role + "]";
     }
-
-    
 
 }

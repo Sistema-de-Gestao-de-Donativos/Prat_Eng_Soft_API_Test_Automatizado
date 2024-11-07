@@ -1,5 +1,9 @@
 package prat_eng_soft_api_test_automatizado.TestCase.models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+
 public class UsuariosAddress {
     private String country;
     private String state;
@@ -15,6 +19,14 @@ public class UsuariosAddress {
         this.neighborhood = neighborhood;
         this.street = street;
         this.number = number;
+    }
+
+    public static UsuariosAddress criarEndereco() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+
+        return new UsuariosAddress("Brasil", faker.address().state(),
+                faker.address().city(), faker.address().cityName(), faker.address().streetName(),
+                faker.number().numberBetween(1, 1000));
     }
 
     public String getCountry() {
@@ -67,8 +79,9 @@ public class UsuariosAddress {
 
     @Override
     public String toString() {
-        return "UsuariosAddressDTO [city=" + city + ", country=" + country + ", neighborhood=" + neighborhood + ", number="
+        return "UsuariosAddressDTO [city=" + city + ", country=" + country + ", neighborhood=" + neighborhood
+                + ", number="
                 + number + ", state=" + state + ", street=" + street + "]";
     }
-    
+
 }
