@@ -1,5 +1,9 @@
 package prat_eng_soft_api_test_automatizado.TestCase.models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+
 public class DoacaoDoador {
     private String name;
     private String document;
@@ -11,6 +15,15 @@ public class DoacaoDoador {
         this.document = document;
         this.email = email;
         this.phone = phone;
+    }
+
+    public static DoacaoDoador criarDoador() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        return new DoacaoDoador(
+                faker.name().fullName(),
+                faker.number().digits(11),
+                faker.internet().emailAddress(),
+                faker.phoneNumber().cellPhone());
     }
 
     public String getName() {
@@ -45,5 +58,4 @@ public class DoacaoDoador {
         this.phone = phone;
     }
 
-    
 }
