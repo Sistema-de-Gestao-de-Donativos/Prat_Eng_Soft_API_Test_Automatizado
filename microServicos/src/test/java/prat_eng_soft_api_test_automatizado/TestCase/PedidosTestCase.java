@@ -20,21 +20,21 @@ public class PedidosTestCase extends BaseTestCase {
     private GenericValidation genericValidation;
     private ConexaoBancoDados conexaoBancoDados;
 
-
     public PedidosTestCase() {
         super("pedidos", "/v1/pedidos");
         genericValidation = new GenericValidation();
         conexaoBancoDados = new ConexaoBancoDados();
-
     }
 
-     /*  @BeforeAll
-    public void getToken(){
-        AuthService authService = new AuthService("baseuri", "rota");
-        String Token = authService.getToken();
-        genericService.addHeader("Authorization", "Bearer " + Token);
-    }*/
-
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota", "clientid",
+     * "clientsecret");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", Token);
+     * }
+     */
 
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
@@ -46,11 +46,11 @@ public class PedidosTestCase extends BaseTestCase {
     public void incluirNovoPedido() {
 
         PedidosItens pedidosItens = new PedidosItens("12367236d3ba9bb45662982031445", "67236d3ba9bb456629820314", 759);
-      //PedidosItens pedidosItens2 = new PedidosItens("2", "2", 2);
+        // PedidosItens pedidosItens2 = new PedidosItens("2", "2", 2);
 
         List<PedidosItens> itens = new ArrayList<>();
         itens.add(pedidosItens);
-      //  itens.add(pedidosItens2);
+        // itens.add(pedidosItens2);
 
         Pedidos pedidos = new Pedidos("1", "1", itens);
 
@@ -58,9 +58,6 @@ public class PedidosTestCase extends BaseTestCase {
         Response response = genericService.post();
         genericValidation.setResponse(response);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
-
-
-
 
     }
 
@@ -71,13 +68,11 @@ public class PedidosTestCase extends BaseTestCase {
         genericValidation.setResponse(response);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
 
-
-
     }
 
     @Test
     public void atualizarPedido() {
 
     }
-    
+
 }

@@ -42,9 +42,9 @@ public class EstoqueTestCase extends BaseTestCase {
     /*
      * @BeforeAll
      * public void getToken(){
-     * AuthService authService = new AuthService("baseuri", "rota");
+     * AuthService authService = new AuthService("baseuri", "rota", "clientid", "clientsecret");
      * String Token = authService.getToken();
-     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * genericService.addHeader("Authorization", Token);
      * }
      */
 

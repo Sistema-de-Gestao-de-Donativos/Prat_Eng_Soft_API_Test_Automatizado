@@ -35,9 +35,9 @@ public class DoacaoTestCase extends BaseTestCase {
     /*
      * @BeforeAll
      * public void getToken(){
-     * AuthService authService = new AuthService("baseuri", "rota");
+     * AuthService authService = new AuthService("baseuri", "rota", "clientid", "clientsecret");
      * String Token = authService.getToken();
-     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * genericService.addHeader("Authorization", Token);
      * }
      */
 
@@ -105,6 +105,8 @@ public class DoacaoTestCase extends BaseTestCase {
                 faker.number().numberBetween(1, 1000),
                 itens);
 
+            genericService.setBody(doacaoDTO);
+            //genericService.addPathParam("idDoador", 1);
         // Response resposta = genericService.post("doacao", pathParams, doacaoDTO);
 
         Response resposta = genericService.post();
