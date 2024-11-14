@@ -32,6 +32,15 @@ public class DoacaoTestCase extends BaseTestCase {
         conexaoBancoDados = new ConexaoBancoDados();
     }
 
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * }
+     */
+
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
         Allure.epic("Sprint 2");
@@ -65,7 +74,7 @@ public class DoacaoTestCase extends BaseTestCase {
         genericService.addQueryParams("startDate", "2024-10-10");
         genericService.addQueryParams("endDate", "2024-10-31");
         genericService.setRota("doacao/date");
-        
+
         Response resposta = genericService.get();
 
         genericValidation.setResponse(resposta);

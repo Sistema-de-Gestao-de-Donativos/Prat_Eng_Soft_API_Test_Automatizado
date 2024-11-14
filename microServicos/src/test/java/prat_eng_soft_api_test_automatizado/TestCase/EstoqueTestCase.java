@@ -20,24 +20,33 @@ import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.TestCase.models.EstoqueEntrada;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
-//import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
+import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 
 public class EstoqueTestCase extends BaseTestCase {
 
     private GenericValidation genericValidation;
-   // private ConexaoBancoDados conexaoBancoDados;
-
+    private ConexaoBancoDados conexaoBancoDados;
 
     public EstoqueTestCase() {
         super("estoque", "/v1/stock");
         genericValidation = new GenericValidation();
-     //   conexaoBancoDados = new ConexaoBancoDados(
-     //       "jdbc:mysql://localhost:3306/db_doacao",
-    //        "root",
-    //        "Leo202426s@");
+        conexaoBancoDados = new ConexaoBancoDados();
+        // conexaoBancoDados = new ConexaoBancoDados(
+        // "jdbc:mysql://localhost:3306/db_doacao",
+        // "root",
+        // "Leo202426s@");
 
     }
+
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * }
+     */
 
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
@@ -68,14 +77,17 @@ public class EstoqueTestCase extends BaseTestCase {
         listaEntradas.add(estoqueEntradaDTO);
 
         genericService.addPathParam("codCd", 1);
-
-        //        Response resposta = genericService.post("{codCd}", pathParams, listaEntradas);
+        genericService.setRota("/{codCd}");
+        genericService.setBody(listaEntradas);
+        // Response resposta = genericService.post("{codCd}", pathParams,
+        // listaEntradas);
 
         Response resposta = genericService.post();
         genericValidation.setResponse(resposta);
+
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("IncluirNovoEntradaEstoque"));
-      //  genericValidation.validarPersistenciaDosDados(true);
+        // genericValidation.validarPersistenciaDosDados(true);
 
     }
 
@@ -86,9 +98,12 @@ public class EstoqueTestCase extends BaseTestCase {
     public void consultaEstoqueCD() {
         Allure.description("Teste para validar a consulta de estoque de um determinado Centro de Distribuição");
 
-        genericService.addPathParam("codCd", 1);
+        conexaoBancoDados.incluirEstoque(14);
 
-        //        Response resposta = genericService.get("{codCd}", pathParams);
+        genericService.addPathParam("codCd", 14);
+        // ;; genericService.addPathParam("codCd", 1);
+        genericService.setRota("/{codCd}");
+        // Response resposta = genericService.get("{codCd}", pathParams);
 
         Response resposta = genericService.get();
         genericValidation.setResponse(resposta);
@@ -96,7 +111,6 @@ public class EstoqueTestCase extends BaseTestCase {
         genericValidation.validarContrato(ContratoManager.getContrato("consultaEstoqueCD"));
     }
 
-    
     @Test
     @DisplayName("Micro Serviço de Estoque = Saida de um Item de um Centro de Distribuição")
     @Tag("Regressao")
@@ -107,9 +121,7 @@ public class EstoqueTestCase extends BaseTestCase {
         genericService.addPathParam("codCd", 10);
         genericService.addPathParam("codItem", 10);
 
-      
-
-        //        Response resposta = genericService.get("{codCd}/{codcodBarras}", pathParams);
+        // Response resposta = genericService.get("{codCd}/{codcodBarras}", pathParams);
 
         Response resposta = genericService.get();
         genericValidation.setResponse(resposta);

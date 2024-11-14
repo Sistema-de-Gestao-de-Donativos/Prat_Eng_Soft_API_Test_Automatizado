@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Tag;
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.TestCase.models.CentroDistribuicao;
+import prat_eng_soft_api_test_automatizado.TestCase.models.CentroDistribuicaoAddress;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
 import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
@@ -28,6 +29,15 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
         genericValidation = new GenericValidation();
         conexaoBancoDados = new ConexaoBancoDados();
     }
+
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * }
+     */
 
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
@@ -94,4 +104,45 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     }
 
     // Falta incluir os testes de cenaŕio de erro
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = validar erro ao tentar criar um Centro de Distribuição sem informar o telefone")
+    @Tag("Regressao")
+    @Order(5)
+    public void validarErroCDSemTelefone() {
+        Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição sem informar o telefone");
+
+        CentroDistribuicao centroDistribuicaoDTO = CentroDistribuicao.criarCentroDistribuicao();
+        centroDistribuicaoDTO.setPhone("");
+
+        genericService.setBody(centroDistribuicaoDTO);
+
+        Response resposta = genericService.post();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarCampo("errors[0]", "Phone is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("CdsErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = validar erro ao tentar criar um Centro de Distribuição sem informar a vizinhança")
+    @Tag("Regressao")
+    @Order(6)
+    public void validarErroCDSemVizinhanca() {
+        Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição sem informar a vizinhança");
+
+        CentroDistribuicaoAddress endereco = CentroDistribuicaoAddress.criarEndereco();
+        endereco.setNeighborhood("");
+
+        CentroDistribuicao centroDistribuicaoDTO = CentroDistribuicao.criarCentroDistribuicao();
+        centroDistribuicaoDTO.setAddress(endereco);
+
+        genericService.setBody(centroDistribuicaoDTO);
+
+        Response resposta = genericService.post();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarCampo("errors[0]", "Neighborhood is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("CdsErro"));
+    }
 }

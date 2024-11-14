@@ -423,5 +423,88 @@ public class ConexaoBancoDados {
     }
 
     // ESTOQUE
+    public void incluirEstoque(int cd) {
+
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("estoque-ms");
+
+            MongoCollection<Document> collection = database.getCollection("stock_item_meta");
+
+            // Criar o documento principal
+            Document documento = new Document("_id", new ObjectId().toHexString())
+                    .append("codCd", cd)
+                    .append("nome", faker.food().ingredient())
+                    .append("quantidade", faker.number().numberBetween(1, 1000))
+                    .append("unidade", faker.food().measurement())
+                    .append("categoria", faker.food().spice())
+                    .append("created_at", new Date());
+
+            InsertOneResult resultado = collection.insertOne(documento);
+            resultado.getInsertedId().asString().getValue();
+
+            // return resultado.getInsertedId().asString().getValue();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            // return null;
+        }
+
+    }
+
+    // PEDIDOS
+    public void incluirPedido() {
+
+        // PedidosItens pedidosItens = new PedidosItens("1", "1", 1);
+        // PedidosItens pedidosItens2 = new PedidosItens("2", "2", 2);
+
+        // List<PedidosItens> itens = new ArrayList<>();
+        // itens.add(pedidosItens);
+        // itens.add(pedidosItens2);
+
+        // Pedidos pedidos = new Pedidos("1", "1", itens);
+
+        String nome = faker.name().fullName();
+        while (encontrarUsuarioPeloNome(nome)) {
+            nome = faker.name().fullName();
+        }
+        String cpf = GeradorCpf.gerarCpfSemFormatacao();
+        while (encontrarUsuarioPeloCpf(cpf)) {
+            cpf = GeradorCpf.gerarCpfSemFormatacao();
+        }
+
+        try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
+            MongoDatabase database = mongoClient.getDatabase(databaseMongo);
+
+            MongoCollection<Document> collection = database.getCollection(colecaoMongo);
+
+            // Criar o subdocumento "address" com valores genéricos de exemplo
+            Document address = new Document("country", "Brasil")
+                    .append("state", faker.address().state())
+                    .append("city", faker.address().city())
+                    .append("neighborhood", faker.address().cityName())
+                    .append("street", faker.address().streetName())
+                    .append("number", faker.number().numberBetween(1, 1000));
+
+            // Criar o documento principal
+            Document documento = new Document("_id", new ObjectId().toHexString())
+                    .append("name", nome)
+                    .append("address", address)
+                    .append("email", faker.internet().emailAddress())
+                    .append("phone", faker.phoneNumber().cellPhone())
+                    .append("role", "role")
+                    .append("codEntidade", 1)
+                    .append("cpf", cpf)
+                    .append("created_at", new Date());
+
+            InsertOneResult resultado = collection.insertOne(documento);
+
+            // return resultado.getInsertedId().asString().getValue();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            // return null;
+        }
+
+    }
 
 }

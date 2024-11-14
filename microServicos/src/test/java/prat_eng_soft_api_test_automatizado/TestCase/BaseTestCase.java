@@ -16,6 +16,7 @@ public class BaseTestCase {
     protected Faker faker;
 
     public BaseTestCase(String baseUri, String basePath) {
+        System.out.println("BaseTestCase");
         genericService = new GenericService(getBaseUri(baseUri), basePath);
         faker = new Faker(new Locale("pt-BR"));
     }

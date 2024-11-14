@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.TestCase.models.Abrigo;
+import prat_eng_soft_api_test_automatizado.TestCase.models.AbrigoAddress;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
 import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
@@ -24,10 +25,19 @@ public class AbrigosTestCase extends BaseTestCase {
     private ConexaoBancoDados conexaoBancoDados;
 
     public AbrigosTestCase() {
-        super("abrigo", "v1/abrigos");
+        super("abrigo", "/v1/abrigos");
         genericValidation = new GenericValidation();
         conexaoBancoDados = new ConexaoBancoDados();
     }
+
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * }
+     */
 
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
@@ -90,6 +100,46 @@ public class AbrigosTestCase extends BaseTestCase {
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("IncluirAbrigo"));
         conexaoBancoDados.encontrarAbrigo(resposta.jsonPath().getString("code"));
+    }
+
+    // Erros
+    @Test
+    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar criar um abrigo sem nome")
+    @Tag("Regressao")
+    @Order(5)
+    public void validarErroABrigoSemNome() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem nome");
+
+        Abrigo abrigoDTO = Abrigo.criarAbrigo();
+        abrigoDTO.setName("");
+        genericService.setBody(abrigoDTO);
+
+        Response resposta = genericService.post();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarCampo("errors[0]", "Name is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar criar um abrigo sem informar a Rua do Abrigo")
+    @Tag("Regressao")
+    @Order(6)
+    public void validarErroABrigoSemCep() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar a Rua do Abrigo");
+
+        Abrigo abrigoDTO = Abrigo.criarAbrigo();
+        AbrigoAddress endereco = abrigoDTO.getAddress();
+        endereco.setStreet("");
+        abrigoDTO.setAddress(endereco);
+
+        genericService.setBody(abrigoDTO);
+
+        Response resposta = genericService.post();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarCampo("errors[0]", "Street is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 
@@ -31,6 +33,15 @@ public class UsuariosTestCase extends BaseTestCase {
         genericValidation = new GenericValidation();
         conexaoBancoDados = new ConexaoBancoDados();
     }
+
+    /*
+     * @BeforeAll
+     * public void getToken(){
+     * AuthService authService = new AuthService("baseuri", "rota");
+     * String Token = authService.getToken();
+     * genericService.addHeader("Authorization", "Bearer " + Token);
+     * }
+     */
 
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
@@ -137,16 +148,17 @@ public class UsuariosTestCase extends BaseTestCase {
         conexaoBancoDados.encontrarUsuarioId(resposta.jsonPath().getString("_id"));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Micro Serviço de Usuarios = Excluir Usuario")
     @Tag("Regressao")
     @Order(5)
-    public void excluirUsuario() {
+    @ValueSource(strings = { "voluntario", "adminCD", "adminAbrigo", "superadmin" })
+    public void excluirUsuario(String role) {
         /** Incluindo um usuario voluntario na mão pra depois apagar ele */
-        String userId = conexaoBancoDados.incluirUsuario("voluntario");
+        String userId = conexaoBancoDados.incluirUsuario(role);
 
         Allure.description(
-                "Teste para validar a exclusão de um Usuario");
+                "Teste para validar a exclusão de um Usuario pelo seu Id, sendo ele um usuario " + role);
 
         genericService.addPathParam("user_id", userId);
         genericService.setRota("/users/{user_id}");
@@ -206,7 +218,7 @@ public class UsuariosTestCase extends BaseTestCase {
     }
 
     @Test
-    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios Abrigo")
+    @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios Admin de Abrigo")
     @Tag("Regressao")
     @Order(9)
     public void listarTodosUsuariosAdminAbrigo() {
@@ -225,7 +237,7 @@ public class UsuariosTestCase extends BaseTestCase {
     @DisplayName("Micro Serviço de Usuarios = Listar todos os Usuarios super admin")
     @Tag("Regressao")
     @Order(10)
-    public void listarTodosUsuariossuperAdmin() {
+    public void listarTodosUsuariosSuperAdmin() {
         Allure.description("Teste para validar a listagem de todos os Usuarios já cadastrados");
 
         genericService.addQueryParams("role", "superadmin");
@@ -259,15 +271,19 @@ public class UsuariosTestCase extends BaseTestCase {
 
     }
 
-    @Test
-    @DisplayName("Micro Serviço de Usuarios = Listar Usuarios pelo Papel( Voluntario, AdminCD, AdminAbrigo, SuperAdmin)")
+    @ParameterizedTest
+    @DisplayName("Micro Serviço de Usuarios = Listar Usuarios pelo Papel")
     @Tag("Regressao")
     @Order(12)
-    public void listarUsuarioPeloPapel() {
+    @ValueSource(strings = { "voluntario", "adminCD", "adminAbrigo", "superadmin" })
+    public void listarUsuarioPeloPapel(String role) {
+
+        conexaoBancoDados.incluirUsuario(role);
+
         Allure.description("Teste para validar a listagem de um usuario pelo seu papel");
 
-        genericService.addPathParam("role", "voluntario");
-        genericService.addPathParam("codEntidade", "12");
+        genericService.addPathParam("role", role);
+        genericService.addPathParam("codEntidade", "1");
         genericService.setRota("/users/{role}/{codEntidade}");
 
         Response resposta = genericService.get();
