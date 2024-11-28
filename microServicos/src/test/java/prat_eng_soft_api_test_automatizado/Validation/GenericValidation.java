@@ -1,6 +1,12 @@
 package prat_eng_soft_api_test_automatizado.Validation;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
+
+import org.bson.Document;
+import org.bson.json.JsonMode;
+import org.bson.json.JsonWriterSettings;
 
 import io.qameta.allure.Allure;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -29,6 +35,14 @@ public class GenericValidation {
     public void validarCampo(String campo, String valor) {
         Allure.step("Validando o campo " + campo + " com o valor " + valor, () -> {
             resposta.then().assertThat().body(campo, org.hamcrest.Matchers.equalTo(valor));
+        });
+    }
+
+    public void validarConsultaMongoDb(Document resultadoConsulta) {
+        Allure.step("Validando a consulta no Banco MongoDb ", () -> {
+            assertTrue(resultadoConsulta != null);
+            Allure.addAttachment("Resultado da consulta no MongoDB",
+                    resultadoConsulta.toJson(JsonWriterSettings.builder().outputMode(JsonMode.RELAXED).build()));
         });
     }
 
