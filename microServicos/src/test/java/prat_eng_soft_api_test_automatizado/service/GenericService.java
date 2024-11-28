@@ -22,15 +22,21 @@ public class GenericService {
     private String rota = "";
     private Object body = "";
 
-    public GenericService(String baseUri, String basePath) {
+    public GenericService() {
         this.requestSpecBuilder = new RequestSpecBuilder()
-                .setBaseUri(baseUri)
-                .setBasePath(basePath)
                 .setContentType(ContentType.JSON)
                 .addFilter(new AllureRestAssured()
                         .setRequestAttachmentName("Requisição Realizada")
                         .setResponseAttachmentName("Resposta"))
                 .setRelaxedHTTPSValidation();
+    }
+
+    public void setBaseUri(String baseUri) {
+        this.requestSpecBuilder.setBaseUri(baseUri);
+    }
+
+    public void setBasePath(String basePath) {
+        this.requestSpecBuilder.setBasePath(basePath);
     }
 
     public void addHeader(String key, Object value) {
