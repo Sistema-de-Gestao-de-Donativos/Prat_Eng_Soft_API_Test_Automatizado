@@ -73,6 +73,11 @@ public class UsuariosBancoDados {
             MongoDatabase database = mongoClient.getDatabase(databaseMongo);
             MongoCollection<Document> collection = database.getCollection(colecaoMongo);
             Document filtro = new Document("name", nome);
+
+            Allure.step("Consulta realizada no Banco MongoDb ", () -> {
+                Allure.addAttachment("Filtro", filtro.toJson());
+            });
+
             return collection.find(filtro).first();
 
         } catch (IllegalArgumentException e) {
@@ -97,6 +102,10 @@ public class UsuariosBancoDados {
             MongoCollection<Document> collection = database.getCollection(colecaoMongo);
 
             Document filtro = new Document("cpf", cpf);
+
+            Allure.step("Consulta realizada no Banco MongoDb ", () -> {
+                Allure.addAttachment("Filtro", filtro.toJson());
+            });
 
             return collection.find(filtro).first();
 
@@ -145,6 +154,10 @@ public class UsuariosBancoDados {
                     .append("codEntidade", 1)
                     .append("cpf", cpf)
                     .append("created_at", new Date());
+
+            Allure.step("Insert realizada no Banco MongoDb ", () -> {
+                Allure.addAttachment("Filtro", documento.toJson());
+            });
 
             InsertOneResult resultado = collection.insertOne(documento);
 
