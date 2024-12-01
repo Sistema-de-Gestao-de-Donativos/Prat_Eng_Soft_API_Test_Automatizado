@@ -32,7 +32,7 @@ public class GenericValidation {
         });
     }
 
-    public void validarCampo(String campo, String valor) {
+    public void validarMensagem(String campo, String valor) {
         Allure.step("Validando o campo " + campo + " com o valor " + valor, () -> {
             resposta.then().assertThat().body(campo, org.hamcrest.Matchers.equalTo(valor));
         });
