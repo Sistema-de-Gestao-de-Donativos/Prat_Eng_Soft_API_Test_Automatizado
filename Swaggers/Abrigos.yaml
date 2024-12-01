@@ -1,0 +1,157 @@
+openapi: 3.0.1
+info:
+  title: API de Abrigo
+  description: API para os serviços de Abrigo
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+    description: Generated server url
+paths:
+  /v1/abrigos:
+    get:
+      tags:
+        - abrigo-controller
+      summary: Return an Abrigo or a list of Abrigos.
+      description: Return an Abrigo by code, name or a full list of Abrigos.
+      operationId: getsAbrigo
+      parameters:
+        - name: codAbrigo
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: nomeAbrigo
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Abrigo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbrigoResponse'
+        '400':
+          description: Invalid Parameters
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Invalid parameters
+        '404':
+          description: Abrigo not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Abrigo not found
+    post:
+      tags:
+        - abrigo-controller
+      summary: Create a new Abrigo.
+      description: Create a new Abrigo using the given parameters.
+      operationId: include
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncludeAbrigoRequest'
+        required: true
+      responses:
+        '201':
+          description: Abrigo created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbrigoCodeResponse'
+        '400':
+          description: Invalid Request Body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error:
+                    - Name is required
+                    - Street is required
+components:
+  schemas:
+    IncludeAbrigoRequest:
+      required:
+        - address
+        - email
+        - name
+        - phone
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          $ref: '#/components/schemas/IncludeAddressRequest'
+    IncludeAddressRequest:
+      required:
+        - city
+        - country
+        - neighborhood
+        - number
+        - state
+        - street
+      type: object
+      properties:
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        neighborhood:
+          type: string
+        street:
+          type: string
+        number:
+          type: integer
+          format: int32
+    AbrigoCodeResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+    AbrigoResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressResponse'
+    AddressResponse:
+      type: object
+      properties:
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        neighborhood:
+          type: string
+        street:
+          type: string
+        number:
+          type: integer
+          format: int32
