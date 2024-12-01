@@ -107,7 +107,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemNome();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Name is required");
+        genericValidation.validarMensagem("errors[0]", "Name is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -120,7 +120,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemTelefone();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Phone is required");
+        genericValidation.validarMensagem("errors[0]", "Phone is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -133,7 +133,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemEmail();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Email is required");
+        genericValidation.validarMensagem("errors[0]", "Email is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -146,7 +146,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemPais();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Country is required");
+        genericValidation.validarMensagem("errors[0]", "Country is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -159,7 +159,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemEstado();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "State is required");
+        genericValidation.validarMensagem("errors[0]", "State is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -172,7 +172,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemCidade();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "City is required");
+        genericValidation.validarMensagem("errors[0]", "City is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -185,7 +185,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemBairro();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Neighborhood is required");
+        genericValidation.validarMensagem("errors[0]", "Neighborhood is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -198,7 +198,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemRua();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Street is required");
+        genericValidation.validarMensagem("errors[0]", "Street is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
@@ -211,7 +211,7 @@ public class AbrigosTestCase {
         Response resposta = abrigoService.casoErroCriarAbrigoSemNumero();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Number is required");
+        genericValidation.validarMensagem("errors[0]", "Number is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
