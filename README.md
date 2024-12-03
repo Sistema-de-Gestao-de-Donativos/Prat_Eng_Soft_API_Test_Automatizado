@@ -1,28 +1,95 @@
 # Projeto para teste Automatizado de API
 
-Todos os cenários de tesates se baseam na cobertura daquilo que é informado no swagger de cada Micro serviço.
+Todos os cenários de testes se baseiam na cobertura daquilo que é informado no swagger de cada Micro serviço.
+
+## Casos de testes para cada microserviço
+
+### ABRIGO
+14 casos de Teste:
+
+**Casos Felizes**
+1. Listar todos os Abrigos
+2. Listar Abrigo pelo código
+3. Listar Abrigo pelo Nome
+4. Listar Abrigo pelo Nome e pelo Código
+5. Criar um Abrigo
+
+**Casos de Erros**
+1. Criação de Abrigo sem informar o nome do Abrigo
+2. Criação de Abrigo sem informar o Telefone do Abrigo
+3. Criação de Abrigo sem informar o E-mail do Abrigo
+4. Criação de Abrigo sem informar o País do Abrigo
+5. Criação de Abrigo sem informar o Estado do Abrigo
+6. Criação de Abrigo sem informar a Cidade do Abrigo
+7. Criação de Abrigo sem informar o Bairro do Abrigo
+8. Criação de Abrigo sem informar o Endereço do Abrigo
+9. Criação de Abrigo sem informar o número
+
+### CENTRO DE DISTRIBUIÇÃO
+Casos Felizes
+1. Listar todos os Centros de Distribuição
+2. Listar Centro de Distribuição pelo código
+3. Criar um Centro de Distribuição
+
+**Casos de Erros**
+1. Criação de Centro de Distribuição sem informar o nome do Centro
+2. Criação de Centro de Distribuição sem informar o Telefone do Centro
+3. Criação de Centro de Distribuição sem informar o E-mail do Centro
+4. Criação de Centro de Distribuição sem informar o País do Centro
+5. Criação de Centro de Distribuição sem informar o Estado do Centro
+6. Criação de Centro de Distribuição sem informar a Cidade do Centro
+7. Criação de Centro de Distribuição sem informar o Bairro do Centro
+8. Criação de Centro de Distribuição sem informar o Endereço do Centro
+9. Criação de Centro de Distribuição sem informar o número
+
+### USUÁRIO
+Casos Felizes
+1. Listar todos os Usuários
+2. Listar Usuário pelo código
+3. Criar um Usuário
+
+**Casos de Erros**
+1. Criação de Usuário sem informar o nome do Usuário
+2. Criação de Usuário sem informar o E-mail do Usuário
+3. Criação de Usuário sem informar a Senha do Usuário
+
+### ESTOQUE
+Casos Felizes
+1. Listar todos os Estoques
+2. Listar Estoque pelo código
+3. Criar um Estoque
+
+**Casos de Erros**
+1. Criação de Estoque sem informar o nome do Estoque
+2. Criação de Estoque sem informar a quantidade do Estoque
+3. Criação de Estoque sem informar a data de validade do Estoque
+
+### DOAÇÃO
+Casos Felizes
+1. Listar todas as Doações
+2. Listar Doação pelo código
+3. Criar uma Doação
+
+**Casos de Erros**
+1. Criação de Doação sem informar o nome do Doador
+2. Criação de Doação sem informar a quantidade da Doação
+3. Criação de Doação sem informar a data da Doação
+
+### PEDIDOS
+Casos Felizes
+1. Listar todos os Pedidos
+2. Listar Pedido pelo código
+3. Criar um Pedido
+
+**Casos de Erros**
+1. Criação de Pedido sem informar o nome do Pedido
+2. Criação de Pedido sem informar a quantidade do Pedido
+3. Criação de Pedido sem informar a data do Pedido
 
 
-Casos de testes para cada microserviço
 
-ABRIGO 14 casos de Teste:
-Casos Feliz
-1 Listar todos os Abrigos
-2 Listar Abrigo pelo codigo 
-3 Listar Abrigo pelo Nome
-4 Listar Abrigo pelo Nome e pelo Codigo
-5 Criar um Abrigo
-Casos de Erros
-1 Criacao de Abrigo sem informar o nome do Abrigo
-2 Criacao de Abrigo sem informar o Telefone do Abrigo
-3 Criacao de Abrigo sem informar o E-mail do Abrigo
-4 Criacao de Abrigo sem informar o Pais do Abrigo
-5 Criacao de Abrigo sem informar o Estado do Abrigo
-6 Criacao de Abrigo sem informar a Cidade do Abrigo
-7 Criacao de Abrigo sem informar o Bairro do Abrigo
-8 Criacao de Abrigo sem informar o Endereço do Abrigo
-9 criar sem informar numero
 
+abrigop
 bug retornando 200 no Post ao inves de 201
 
 
@@ -46,4 +113,3 @@ doacao
 bug que nao está retornando o body na 2xx do post doacao
 
 pedidos 
-
