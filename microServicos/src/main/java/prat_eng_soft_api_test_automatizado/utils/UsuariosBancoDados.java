@@ -1,10 +1,13 @@
 package prat_eng_soft_api_test_automatizado.utils;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -17,6 +20,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 
 import io.qameta.allure.Allure;
+import io.restassured.response.Response;
 
 public class UsuariosBancoDados {
 
@@ -25,6 +29,19 @@ public class UsuariosBancoDados {
     private String urlMongo = "";
     private String databaseMongo = "";
     private String colecaoMongo = "";
+
+    private Response resposta;
+
+    public UsuariosBancoDados() {
+    }
+
+    public UsuariosBancoDados(Response resposta) {
+        this.resposta = resposta;
+    }
+
+    public void setResposta(Response resposta) {
+        this.resposta = resposta;
+    }
 
     private void carregarDados() throws IOException {
         Properties propriedades = ConexaoBancoDados.getProperties("UsuariosMongoDb");
@@ -127,8 +144,8 @@ public class UsuariosBancoDados {
             throw new RuntimeException("Erro ao carregar dados de conexão do MongoDB", e);
         }
 
-        String nome = getNome();
-        String cpf = getCpf();
+        String nome = getNomePeloBancoDados();
+        String cpf = getCpfPeloBancoDados();
 
         try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
 
@@ -170,7 +187,7 @@ public class UsuariosBancoDados {
 
     }
 
-    public String getCpf() {
+    public String getCpfPeloBancoDados() {
 
         String cpf = GeradorCpf.gerarCpfSemFormatacao();
         while (encontrarUsuarioPeloCpf(cpf) != null) {
@@ -181,7 +198,7 @@ public class UsuariosBancoDados {
 
     }
 
-    public String getNome() {
+    public String getNomePeloBancoDados() {
 
         String nome = faker.name().fullName();
         while (encontrarUsuarioPeloNome(nome) != null) {
@@ -189,6 +206,54 @@ public class UsuariosBancoDados {
         }
         return nome;
 
+    }
+
+    private List<String> existeEsseCpf() {
+        List<String> cpfs = new ArrayList<>();
+        List<String> respostaFormatada = resposta.jsonPath().getList("");
+
+        for (int i = 0; i < respostaFormatada.size(); i++) {
+            String aux = resposta.jsonPath().getString("[" + i + "]");
+            Pattern pattern = Pattern.compile("cpf:(\\d{11})");
+            Matcher matcher = pattern.matcher(aux);
+            if (matcher.find()) {
+                cpfs.add(matcher.group(1)); // Captura o CPF
+            }
+        }
+        return cpfs;
+    }
+
+    private List<String> existeEsseNome() {
+        List<String> nomes = new ArrayList<>();
+        List<String> respostaFormatada = resposta.jsonPath().getList("");
+
+        for (int i = 0; i < respostaFormatada.size(); i++) {
+            String aux = resposta.jsonPath().getString("[" + i + "]");
+            Pattern pattern = Pattern.compile("name:([^,]+)");
+            Matcher matcher = pattern.matcher(aux);
+            if (matcher.find()) {
+                nomes.add(matcher.group(1)); // Captura o CPF
+            }
+        }
+        return nomes;
+    }
+
+    public String getCpfPelaRespota() {
+        List<String> cpfs = existeEsseCpf();
+        String cpf = GeradorCpf.gerarCpfSemFormatacao();
+        while (cpfs.contains(cpf)) {
+            cpf = GeradorCpf.gerarCpfSemFormatacao();
+        }
+        return cpf;
+    }
+
+    public String getNomePelaRespota() {
+        List<String> nomes = existeEsseNome();
+        String nome = faker.name().fullName();
+        while (nomes.contains(nome)) {
+            nome = faker.name().fullName();
+        }
+        return nome;
     }
 
 }
