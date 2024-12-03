@@ -60,10 +60,19 @@ public class GenericService {
     }
 
     public void prepararParaNovaRequisicao() {
-        this.pathParams.clear();
-        this.queryParams.clear();
-        this.headers.clear();
-        this.body = new Object();
+        if (!pathParams.isEmpty()) {
+            this.pathParams.clear();
+        }
+
+        if (!queryParams.isEmpty()) {
+            this.queryParams.clear();
+        }
+
+        if (!headers.isEmpty()) {
+            this.headers.clear();
+        }
+
+        this.body = "";
     }
 
     private Response executeRequest(String method) {
