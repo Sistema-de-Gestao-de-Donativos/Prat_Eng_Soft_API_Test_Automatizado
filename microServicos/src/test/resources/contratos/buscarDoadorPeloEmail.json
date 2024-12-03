@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "document": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "donationsNumber": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "document",
+      "email",
+      "phone",
+      "donationsNumber"
+    ]
+  }
