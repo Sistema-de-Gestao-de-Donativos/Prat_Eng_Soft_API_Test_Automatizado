@@ -1,0 +1,340 @@
+openapi: 3.0.1
+info:
+  title: API de Doação
+  description: API para os serviços de doação e doadores
+  version: 1.0.0
+servers:
+  - url: http://localhost:8083
+    description: Generated server url
+paths:
+  /v1/item:
+    post:
+      tags:
+        - item-controller
+      summary: Create or update Item.
+      description: Create a new Item or update an existing one using the given request.
+      operationId: includeOrUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncludeOrUpdateItemRequest'
+        required: true
+      responses:
+        '200':
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemIdResponse'
+        '201':
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemIdResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error:
+                    - Name is required
+  /v1/doador:
+    get:
+      tags:
+        - doador-controller
+      summary: Get a Doador.
+      description: Return a specific Doador by Email.
+      operationId: get
+      parameters:
+        - name: emailRequest
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/EmailRequest'
+      responses:
+        '200':
+          description: Doador found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoadorResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Invalid request body
+        '404':
+          description: Doador not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Doador not found
+    post:
+      tags:
+        - doador-controller
+      summary: Create a new Doador.
+      description: Create a new Doador using the given request.
+      operationId: include
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncludeDoadorRequest'
+        required: true
+      responses:
+        '201':
+          description: Doador created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoadorIdResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error:
+                    - Name is required
+                    - Document is required
+  /v1/doacao:
+    post:
+      tags:
+        - doacao-controller
+      summary: Post a Doacao.
+      description: Post a new Doacao into Estoque.
+      operationId: receiveDoacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoacaoRequest'
+        required: true
+      responses:
+        '201':
+          description: Doacao created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoacaoResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example: |-
+                  {"error": ["codDoador is required",
+                  codCD is required",
+                  "itens is required"]}
+  /v1/doacao/{idDoacao}:
+    get:
+      tags:
+        - doacao-controller
+      summary: Get a Doacao.
+      description: Return a specific Doacao by idDoacao.
+      operationId: getDoacao
+      parameters:
+        - name: idDoacao
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Doacao found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoacaoResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Invalid request body
+        '404':
+          description: Doacao not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Doacao not found
+  /v1/doacao/date:
+    get:
+      tags:
+        - doacao-controller
+      summary: Get lista de doações por data.
+      description: 'Return a specific Doacao list by date. Format: yyyy-mm-dd'
+      operationId: getDoacaoPorData
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Doacao found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoacaoResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Invalid request body
+        '404':
+          description: Doacao not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  error: Doacao not found
+components:
+  schemas:
+    IncludeOrUpdateItemRequest:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    ItemIdResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    IncludeDoadorRequest:
+      required:
+        - document
+        - email
+        - name
+        - phone
+      type: object
+      properties:
+        name:
+          type: string
+        document:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+    DoadorIdResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    DoacaoRequest:
+      required:
+        - codCD
+        - codDoador
+        - itens
+      type: object
+      properties:
+        codDoador:
+          type: integer
+          format: int64
+        codCD:
+          type: integer
+          format: int64
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDoado'
+    ItemDoado:
+      required:
+        - categoria
+        - nome
+        - qtd
+        - unidade
+      type: object
+      properties:
+        nome:
+          type: string
+        unidade:
+          type: string
+        qtd:
+          type: integer
+          format: int32
+        categoria:
+          type: string
+    DoacaoResponse:
+      type: object
+      properties:
+        idDoacao:
+          type: integer
+          format: int64
+        codCD:
+          type: integer
+          format: int64
+        idDoador:
+          type: integer
+          format: int64
+        idItem:
+          type: string
+        qtd:
+          type: integer
+          format: int32
+        dataDoacao:
+          type: string
+          format: date-time
+    EmailRequest:
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+    DoadorResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        document:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        donationsNumber:
+          type: integer
+          format: int64
