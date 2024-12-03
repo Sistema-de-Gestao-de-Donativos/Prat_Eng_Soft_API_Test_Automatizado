@@ -1,9 +1,5 @@
 package prat_eng_soft_api_test_automatizado.TestCase;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,31 +7,26 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
-import prat_eng_soft_api_test_automatizado.TestCase.models.Doacao;
-import prat_eng_soft_api_test_automatizado.TestCase.models.DoacaoDoador;
-import prat_eng_soft_api_test_automatizado.TestCase.models.DoacaoItens;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
-import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
+import prat_eng_soft_api_test_automatizado.service.DoacaoService;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 
-public class DoacaoTestCase extends BaseTestCase {
+@TestMethodOrder(OrderAnnotation.class)
+public class DoacaoTestCase {
 
-    GenericValidation genericValidation;
-    private ConexaoBancoDados conexaoBancoDados;
-
-    public DoacaoTestCase() {
-        super("doacao", "v1/");
-        genericValidation = new GenericValidation();
-        conexaoBancoDados = new ConexaoBancoDados();
-    }
+    private GenericValidation genericValidation = new GenericValidation();
+    private DoacaoService doacaoService = new DoacaoService();
 
     /*
      * @BeforeAll
      * public void getToken(){
-     * AuthService authService = new AuthService("baseuri", "rota", "clientid", "clientsecret");
+     * AuthService authService = new AuthService("baseuri", "rota", "clientid",
+     * "clientsecret");
      * String Token = authService.getToken();
      * genericService.addHeader("Authorization", Token);
      * }
@@ -53,34 +44,22 @@ public class DoacaoTestCase extends BaseTestCase {
     @Order(1)
     public void criarDoador() {
         Allure.description("Teste para validar a criação de um novo Doador");
-
-        DoacaoDoador doacaoItemDTO = DoacaoDoador.criarDoador();
-        genericService.setBody(doacaoItemDTO);
-
-        Response resposta = genericService.post();
+        Response resposta = doacaoService.casoFelizIncluirDoador();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("criarDoador"));
-        conexaoBancoDados.encontrarDoadorDoacao(resposta.jsonPath().getString("id"));
     }
 
     @Test
-    @DisplayName("Micro Serviço de Doação = Busca de um doador pela Data")
+    @DisplayName("Micro Serviço de Doação = Busca de um doador pelo Email")
     @Tag("Regressao")
-    @Order(3)
-    public void buscarDoadorPeloData() {
-        Allure.description("Teste para validar busca de um doador por uma escopo de data");
-
-        genericService.addQueryParams("startDate", "2024-10-10");
-        genericService.addQueryParams("endDate", "2024-10-31");
-        genericService.setRota("doacao/date");
-
-        Response resposta = genericService.get();
-
+    @Order(2)
+    public void buscarDoadorPeloEmail() {
+        Allure.description("Teste para validar a busca de um doador pelo email");
+        Response resposta = doacaoService.casoFelizConsultarDoadorPeloEmail();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("buscarDoacaoPelaData"));
-
+        genericValidation.validarContrato(ContratoManager.getContrato("buscarDoadorPeloEmail"));
     }
 
     @Test
@@ -89,32 +68,10 @@ public class DoacaoTestCase extends BaseTestCase {
     @Order(4)
     public void enviarDoacao() {
         Allure.description("Teste para validar o envio de uma Doação");
-
-        DoacaoItens doacaoItensDTO = new DoacaoItens(
-                faker.food().ingredient(),
-                new SimpleDateFormat("dd/MM/yyyy").format(faker.date().birthday()),
-                faker.food().measurement(),
-                faker.number().numberBetween(1, 1000),
-                faker.food().spice());
-
-        List<DoacaoItens> itens = new ArrayList<>();
-        itens.add(doacaoItensDTO);
-
-        Doacao doacaoDTO = new Doacao(
-                2,
-                faker.number().numberBetween(1, 1000),
-                itens);
-
-            genericService.setBody(doacaoDTO);
-            //genericService.addPathParam("idDoador", 1);
-        // Response resposta = genericService.post("doacao", pathParams, doacaoDTO);
-
-        Response resposta = genericService.post();
+        Response resposta = doacaoService.casoFelizIncluirDoacao();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
-
-        conexaoBancoDados.encontrarEnviooacao("1");
-
+        resposta.then().log().all();
     }
 
     @Test
@@ -123,13 +80,22 @@ public class DoacaoTestCase extends BaseTestCase {
     @Order(5)
     public void buscarDoacaoPeloId() {
         Allure.description("Teste para validar a busca de uma doação pelo idDoacao");
-        genericService.addPathParam("idDoacao", 1);
-        // Response resposta = genericService.get("doacao/{idDoacao}",pathParams);
-
-        Response resposta = genericService.get();
+        Response resposta = doacaoService.casoFelizBuscarDoacaoPeloId();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("buscarDoacaoPeloId"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Doação = Busca de um doador pela Data")
+    @Tag("Regressao")
+    @Order(3)
+    public void buscarDoadorPeloData() {
+        Allure.description("Teste para validar busca de um doador por uma escopo de data");
+        Response resposta = doacaoService.casoFelizBuscarPelaData();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("buscarDoacaoPelaData"));
 
     }
 
