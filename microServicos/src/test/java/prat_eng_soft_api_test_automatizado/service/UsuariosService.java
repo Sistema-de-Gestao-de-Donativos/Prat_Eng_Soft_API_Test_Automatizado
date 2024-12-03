@@ -3,9 +3,9 @@ package prat_eng_soft_api_test_automatizado.service;
 import java.util.Properties;
 
 import io.restassured.response.Response;
-import prat_eng_soft_api_test_automatizado.TestCase.models.Usuarios;
 import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
 import prat_eng_soft_api_test_automatizado.utils.UsuariosBancoDados;
+import prat_eng_soft_api_test_automatizado.utils.models.Usuarios;
 
 public class UsuariosService extends GenericService {
 
@@ -27,7 +27,9 @@ public class UsuariosService extends GenericService {
     }
 
     private Usuarios montarUsuario() {
-        return Usuarios.criarUsuario(usuariosBancoDados.getNome(), usuariosBancoDados.getCpf());
+        usuariosBancoDados.setResposta(casoFelizListarTodosUsuarios());
+        prepararParaNovaRequisicao();
+        return Usuarios.criarUsuario(usuariosBancoDados.getNomePelaRespota(), usuariosBancoDados.getCpfPelaRespota());
     }
 
     public Response casoFelizIncluIncluirUsuarioVoluntario() {
