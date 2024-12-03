@@ -1,0 +1,386 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Storage Microservice",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/v1/": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health",
+        "operationId": "health_v1__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health V1  Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stock/{codCd}": {
+      "get": {
+        "tags": [
+          "MS de Estoque"
+        ],
+        "summary": "Get Estoque Atual Cd",
+        "operationId": "get_estoque_atual_cd_v1_stock__codCd__get",
+        "parameters": [
+          {
+            "name": "codCd",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Codcd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockItemDAO"
+                  },
+                  "title": "Response Get Estoque Atual Cd V1 Stock  Codcd  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MS de Estoque"
+        ],
+        "summary": "Entrada Estoque Cd",
+        "operationId": "entrada_estoque_cd_v1_stock__codCd__post",
+        "parameters": [
+          {
+            "name": "codCd",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Codcd"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputStockItem"
+                },
+                "title": "Input Item"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockItemDAO"
+                  },
+                  "title": "Response Entrada Estoque Cd V1 Stock  Codcd  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "MS de Estoque"
+        ],
+        "summary": "Saida Estoque Cd",
+        "operationId": "saida_estoque_cd_v1_stock__codCd__delete",
+        "parameters": [
+          {
+            "name": "codCd",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Codcd"
+            }
+          },
+          {
+            "name": "nome",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Nome"
+            }
+          },
+          {
+            "name": "qtd",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Qtd"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stock/{codCd}/{nome}": {
+      "get": {
+        "tags": [
+          "MS de Estoque"
+        ],
+        "summary": "Get Item Cd",
+        "operationId": "get_item_cd_v1_stock__codCd___nome__get",
+        "parameters": [
+          {
+            "name": "codCd",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Codcd"
+            }
+          },
+          {
+            "name": "nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Nome"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockItemDAO"
+                  },
+                  "title": "Response Get Item Cd V1 Stock  Codcd   Nome  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InputStockItem": {
+        "properties": {
+          "nome": {
+            "type": "string",
+            "title": "Nome",
+            "description": "CPF/CNPJ do doador dos itens."
+          },
+          "quantidade": {
+            "type": "integer",
+            "title": "Quantidade",
+            "description": "Quantidade ainda disponível no estoque."
+          },
+          "unidade": {
+            "type": "string",
+            "title": "Unidade",
+            "description": "Unidade de medida do item."
+          },
+          "dataValidade": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datavalidade",
+            "description": "Data de validade do item."
+          },
+          "categoria": {
+            "type": "string",
+            "title": "Categoria",
+            "description": "Categoria do item."
+          }
+        },
+        "type": "object",
+        "required": [
+          "nome",
+          "quantidade",
+          "unidade",
+          "categoria"
+        ],
+        "title": "InputStockItem"
+      },
+      "StockItemDAO": {
+        "properties": {
+          "codCd": {
+            "type": "integer",
+            "title": "Codcd",
+            "description": "Código do CD que está recebendo os itens."
+          },
+          "nome": {
+            "type": "string",
+            "title": "Nome",
+            "description": "CPF/CNPJ do doador dos itens."
+          },
+          "quantidade": {
+            "type": "integer",
+            "title": "Quantidade",
+            "description": "Quantidade ainda disponível no estoque."
+          },
+          "unidade": {
+            "type": "string",
+            "title": "Unidade",
+            "description": "Unidade de medida do item."
+          },
+          "categoria": {
+            "type": "string",
+            "title": "Categoria",
+            "description": "Categoria do item."
+          },
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "codCd",
+          "nome",
+          "quantidade",
+          "unidade",
+          "categoria"
+        ],
+        "title": "StockItemDAO"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
