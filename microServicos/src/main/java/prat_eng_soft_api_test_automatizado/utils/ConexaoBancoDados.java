@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -40,6 +41,41 @@ public class ConexaoBancoDados {
     public ConexaoBancoDados() {
         faker = new Faker(new Locale("pt-BR"));
     }
+
+    public static Properties getProperties(String nomeArquivoConecaoBancoDados) throws IOException {
+
+        Properties propriedades = new Properties();
+        String caminhoArquivoSQL = System.getProperty("user.dir") + File.separator + "src" + File.separator +
+                "test" + File.separator + "resources" + File.separator + nomeArquivoConecaoBancoDados + ".properties";
+
+        try (InputStream input = new FileInputStream(caminhoArquivoSQL)) {
+            // Carregar o arquivo de propriedades
+            propriedades.load(input);
+            return propriedades;
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("Arquivo não encontrado");
+            e.printStackTrace();
+            throw e;
+        } catch (SecurityException e) {
+            System.out.println("Erro de segurança, você não tem permissão para acessar o arquivo");
+            e.printStackTrace();
+            throw e;
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo");
+            e.printStackTrace();
+            throw e;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao indicar o input do arquivo");
+            e.printStackTrace();
+            throw e;
+        } catch (NullPointerException e) {
+            System.out.println("valor null usado como parâmetro para o metodo load do Properties");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 
     private void conectarBancoDadosSQL() {
         Properties propriedades = new Properties();
@@ -313,115 +349,6 @@ public class ConexaoBancoDados {
 
     // ------------------------ MONGO--------------------------------------
 
-    // Usuarios
-    public void encontrarUsuarioId(String idUsuario) {
-        conectarBancoDadosMongo();
-        try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
-
-            MongoDatabase database = mongoClient.getDatabase(databaseMongo);
-
-            MongoCollection<Document> collection = database.getCollection(colecaoMongo);
-
-            Document filtro = new Document("_id", idUsuario);
-            Document resultado = collection.find(filtro).first();
-
-            String buscaRealizada = "Busca realizada: " + filtro.toJson();
-
-            validarPersistencia(buscaRealizada, resultado);
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
-    }
-
-    public boolean encontrarUsuarioPeloNome(String nome) {
-        conectarBancoDadosMongo();
-
-        try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
-            MongoDatabase database = mongoClient.getDatabase(databaseMongo);
-
-            MongoCollection<Document> collection = database.getCollection(colecaoMongo);
-
-            Document filtro = new Document("name", nome);
-
-            Document resultado = collection.find(filtro).first();
-
-            return resultado != null;
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-
-    }
-
-    public boolean encontrarUsuarioPeloCpf(String cpf) {
-        conectarBancoDadosMongo();
-        try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
-            MongoDatabase database = mongoClient.getDatabase(databaseMongo);
-
-            MongoCollection<Document> collection = database.getCollection(colecaoMongo);
-
-            Document filtro = new Document("cpf", cpf);
-
-            Document resultado = collection.find(filtro).first();
-
-            return resultado != null;
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-
-    }
-
-    public String incluirUsuario(String role) {
-
-        String nome = faker.name().fullName();
-        while (encontrarUsuarioPeloNome(nome)) {
-            nome = faker.name().fullName();
-        }
-        String cpf = GeradorCpf.gerarCpfSemFormatacao();
-        while (encontrarUsuarioPeloCpf(cpf)) {
-            cpf = GeradorCpf.gerarCpfSemFormatacao();
-        }
-
-        try (MongoClient mongoClient = MongoClients.create(urlMongo)) {
-            MongoDatabase database = mongoClient.getDatabase(databaseMongo);
-
-            MongoCollection<Document> collection = database.getCollection(colecaoMongo);
-
-            // Criar o subdocumento "address" com valores genéricos de exemplo
-            Document address = new Document("country", "Brasil")
-                    .append("state", faker.address().state())
-                    .append("city", faker.address().city())
-                    .append("neighborhood", faker.address().cityName())
-                    .append("street", faker.address().streetName())
-                    .append("number", faker.number().numberBetween(1, 1000));
-
-            // Criar o documento principal
-            Document documento = new Document("_id", new ObjectId().toHexString())
-                    .append("name", nome)
-                    .append("address", address)
-                    .append("email", faker.internet().emailAddress())
-                    .append("phone", faker.phoneNumber().cellPhone())
-                    .append("role", role)
-                    .append("codEntidade", 1)
-                    .append("cpf", cpf)
-                    .append("created_at", new Date());
-
-            InsertOneResult resultado = collection.insertOne(documento);
-
-            return resultado.getInsertedId().asString().getValue();
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return null;
-        }
-
-    }
-
     // ESTOQUE
     public void incluirEstoque(int cd) {
 
@@ -451,6 +378,7 @@ public class ConexaoBancoDados {
 
     }
 
+/*
     // PEDIDOS
     public void incluirPedido() {
 
@@ -506,5 +434,5 @@ public class ConexaoBancoDados {
         }
 
     }
-
+*/
 }
