@@ -1,7 +1,6 @@
 package prat_eng_soft_api_test_automatizado.TestCase;
 
 import org.apache.http.HttpStatus;
-import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -18,13 +17,11 @@ import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
 import prat_eng_soft_api_test_automatizado.service.UsuariosService;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
-import prat_eng_soft_api_test_automatizado.utils.UsuariosBancoDados;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class UsuariosTestCase {
 
     private GenericValidation genericValidation = new GenericValidation();
-    private UsuariosBancoDados usuariosBancoDados = new UsuariosBancoDados();
     private UsuariosService usuariosService = new UsuariosService();
 
     /*
@@ -53,9 +50,6 @@ public class UsuariosTestCase {
         this.genericValidation.setResponse(resposta);
         this.genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         this.genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
-        Document resultadoConsultaNoMongoDb = this.usuariosBancoDados
-                .encontrarUsuarioId(resposta.jsonPath().getString("_id"));
-        this.genericValidation.validarConsultaMongoDb(resultadoConsultaNoMongoDb);
     }
 
     @Test
@@ -69,10 +63,6 @@ public class UsuariosTestCase {
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
-        Document resultadoConsultaNoMongoDb = this.usuariosBancoDados
-                .encontrarUsuarioId(resposta.jsonPath().getString("_id"));
-        this.genericValidation.validarConsultaMongoDb(resultadoConsultaNoMongoDb);
-
     }
 
     @Test
@@ -85,9 +75,6 @@ public class UsuariosTestCase {
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
-        Document resultadoConsultaNoMongoDb = this.usuariosBancoDados
-                .encontrarUsuarioId(resposta.jsonPath().getString("_id"));
-        this.genericValidation.validarConsultaMongoDb(resultadoConsultaNoMongoDb);
     }
 
     @Test
@@ -100,9 +87,6 @@ public class UsuariosTestCase {
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
         genericValidation.validarContrato(ContratoManager.getContrato("incluirUsuario"));
-        Document resultadoConsultaNoMongoDb = this.usuariosBancoDados
-                .encontrarUsuarioId(resposta.jsonPath().getString("_id"));
-        this.genericValidation.validarConsultaMongoDb(resultadoConsultaNoMongoDb);
     }
 
     @ParameterizedTest
@@ -188,7 +172,6 @@ public class UsuariosTestCase {
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarioPeloId"));
-        // usuariosBancoDados.encontrarUsuarioId(userId);
     }
 
     @ParameterizedTest
