@@ -35,7 +35,7 @@ public class DoacaoTestCase {
     @BeforeEach
     public void allureReport(TestInfo testInfo) {
         Allure.epic("Sprint 2");
-        Allure.feature("Micro Serviço de Centro de Doação");
+        Allure.feature("Micro Serviço de Doação");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class DoacaoTestCase {
     @Test
     @DisplayName("Micro Serviço de Doação = Envio de uma Doação")
     @Tag("Regressao")
-    @Order(4)
+    @Order(3)
     public void enviarDoacao() {
         Allure.description("Teste para validar o envio de uma Doação");
         Response resposta = doacaoService.casoFelizIncluirDoacao();
@@ -77,7 +77,7 @@ public class DoacaoTestCase {
     @Test
     @DisplayName("Micro Serviço de Doação = Busca de uma Doação pelo Id")
     @Tag("Regressao")
-    @Order(5)
+    @Order(4)
     public void buscarDoacaoPeloId() {
         Allure.description("Teste para validar a busca de uma doação pelo idDoacao");
         Response resposta = doacaoService.casoFelizBuscarDoacaoPeloId();
@@ -89,7 +89,7 @@ public class DoacaoTestCase {
     @Test
     @DisplayName("Micro Serviço de Doação = Busca de um doador pela Data")
     @Tag("Regressao")
-    @Order(3)
+    @Order(5)
     public void buscarDoadorPeloData() {
         Allure.description("Teste para validar busca de um doador por uma escopo de data");
         Response resposta = doacaoService.casoFelizBuscarPelaData();

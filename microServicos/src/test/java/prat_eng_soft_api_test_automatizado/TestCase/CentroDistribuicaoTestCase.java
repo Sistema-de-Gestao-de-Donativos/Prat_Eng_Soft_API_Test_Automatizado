@@ -79,7 +79,7 @@ public class CentroDistribuicaoTestCase {
     @Tag("Regressao")
     @Order(4)
     public void listarCDsPeloNomeECd() {
-        Allure.description("Teste para validar a listagem de um Centro de Distribuição pelo seu nome");
+        Allure.description("Teste para validar a listagem de um Centro de Distribuição pelo seu nome e seu código");
         Response resposta = centroDistribuicaoService.casoFelizDeListarCentroDistribuicaoPeloNomeECodigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -89,7 +89,7 @@ public class CentroDistribuicaoTestCase {
     @Test
     @DisplayName("Micro Serviço de Centro Distribuição = Incluir Centro de Distribuição")
     @Tag("Regressao")
-    @Order(4)
+    @Order(5)
     public void adicionarCD() {
         Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição");
         Response resposta = centroDistribuicaoService.casoFelizAdcionarCentroDistribuicao();

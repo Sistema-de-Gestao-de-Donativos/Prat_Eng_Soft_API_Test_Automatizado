@@ -2,18 +2,23 @@ package prat_eng_soft_api_test_automatizado.TestCase;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.TestMethodOrder;
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
 import prat_eng_soft_api_test_automatizado.service.PedidosService;
 
+@TestMethodOrder(OrderAnnotation.class)
 
-public class PedidosTestCase  {
+public class PedidosTestCase {
 
-    private GenericValidation genericValidation= new GenericValidation();
+    private GenericValidation genericValidation = new GenericValidation();
     private PedidosService pedidosService = new PedidosService();
 
     /*
@@ -33,27 +38,36 @@ public class PedidosTestCase  {
     }
 
     @Test
+    @DisplayName("Micro Serviço de Pedidos = Incluir novo Pedido")
+    @Tag("Regressao")
+    @Order(1)
     public void incluirNovoPedido() {
-      Response response = pedidosService.casoFelizIncluirPedido();
-      genericValidation.setResponse(response);
-      genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
+        Allure.description("Teste para validar a inclusão de um novo pedido");
+        Response response = pedidosService.casoFelizIncluirPedido();
+        genericValidation.setResponse(response);
+        genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
     }
 
     @Test
+    @DisplayName("Micro Serviço de Pedidos = Consultar pedidos")
+    @Tag("Regressao")
+    @Order(2)
     public void consultarPedido() {
-
+        Allure.description("Teste para validar a consulta de um pedido");
         Response response = pedidosService.casoFelizConsultarPedido();
         genericValidation.setResponse(response);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
-
     }
 
     @Test
+    @DisplayName("Micro Serviço de Pedidos = Atualizar status de um Pedido")
+    @Tag("Regressao")
+    @Order(3)
     public void atualizarPedido() {
-    Response response = pedidosService.casoFelizAtualizarPedido();
-      genericValidation.setResponse(response);
-      genericValidation.validarStatusCode(HttpStatus.SC_OK);
-
+        Allure.description("Teste para validar a troca do Status de um pedido");
+        Response response = pedidosService.casoFelizAtualizarPedido();
+        genericValidation.setResponse(response);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
     }
 
 }

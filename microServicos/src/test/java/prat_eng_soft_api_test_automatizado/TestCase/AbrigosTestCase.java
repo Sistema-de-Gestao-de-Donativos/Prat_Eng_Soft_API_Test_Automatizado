@@ -3,11 +3,12 @@ package prat_eng_soft_api_test_automatizado.TestCase;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.qameta.allure.Allure;
@@ -74,11 +75,11 @@ public class AbrigosTestCase {
     }
 
     @Test
-    @DisplayName("Micro Serviço de Abrigos = Listar abrigo pelo nome")
+    @DisplayName("Micro Serviço de Abrigos = Listar abrigo pelo nome e codigo")
     @Tag("Regressao")
     @Order(4)
     public void listarAbrigoPeloNomeEpeloCodigo() {
-        Allure.description("Teste para validar a listagem de um Abrigo pelo seu nome");
+        Allure.description("Teste para validar a listagem de um Abrigo pelo seu nome e codigo");
         Response resposta = abrigoService.casoFelizDeListarAbrigoPeloNomeECodigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);

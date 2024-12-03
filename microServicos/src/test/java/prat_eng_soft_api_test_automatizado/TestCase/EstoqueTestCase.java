@@ -44,7 +44,7 @@ public class EstoqueTestCase {
   @Order(1)
   public void incluirNovaEntradaEstoque() {
     Allure.description("Teste para validar a entrada de um novo item no Estoque");
-    Response resposta = estoqueService.casoFelizEntradaStock();
+    Response resposta = estoqueService.casoFelizEntradaStock("2");
     genericValidation.setResponse(resposta);
     genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
     genericValidation.validarContrato(ContratoManager.getContrato("IncluirNovoEntradaEstoque"));
@@ -74,7 +74,7 @@ public class EstoqueTestCase {
   }
 
   @Test
-  @DisplayName("Micro Serviço de Estoque = Saida de um Item de um Centro de Distribuição")
+  @DisplayName("Micro Serviço de Estoque = consulta de quantidade de itens de um Centro de Distribuição")
   @Tag("Regressao")
   @Order(4)
   public void consultaQuantidadeItens() {
