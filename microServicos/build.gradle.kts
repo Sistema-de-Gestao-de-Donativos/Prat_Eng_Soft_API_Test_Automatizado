@@ -103,6 +103,40 @@ tasks.test{
     include("**/RegressaoTestSuite.class")
 }
 
+tasks.register<Test>("rodarTestesAbrigo"){
+useJUnitPlatform()
+    include("**/AbrigosTestCase.class") 
+}
+
+tasks.register<Test>("rodarTestesCD"){
+useJUnitPlatform()
+    include("**/CentroDistribuicaoTestCase.class") 
+}
+
+tasks.register<Test>("rodarTestesDoacao"){
+useJUnitPlatform()
+    include("**/DoacaoTestCase.class") 
+}
+
+tasks.register<Test>("rodarTestesEstoque"){
+useJUnitPlatform()
+    include("**/EstoqueTestCase.class") 
+}
+
+tasks.register<Test>("rodarTestesPedidos"){
+useJUnitPlatform()
+    include("**/PedidosTestCase.class") 
+}
+
+tasks.register<Test>("rodarTestesUsuarios"){
+useJUnitPlatform()
+    include("**/UsuariosTestCase.class") 
+}
+
+
+
+
+
 tasks.register("generateAllureReport") {
     dependsOn(tasks.test)
     val inputPath = "${projectDir}/build/allure-results"
