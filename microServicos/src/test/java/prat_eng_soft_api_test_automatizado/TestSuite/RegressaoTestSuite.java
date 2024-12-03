@@ -8,15 +8,17 @@ import prat_eng_soft_api_test_automatizado.TestCase.AbrigosTestCase;
 import prat_eng_soft_api_test_automatizado.TestCase.CentroDistribuicaoTestCase;
 import prat_eng_soft_api_test_automatizado.TestCase.DoacaoTestCase;
 import prat_eng_soft_api_test_automatizado.TestCase.EstoqueTestCase;
+import prat_eng_soft_api_test_automatizado.TestCase.PedidosTestCase;
 import prat_eng_soft_api_test_automatizado.TestCase.UsuariosTestCase;
 
 @Suite
 @SelectClasses({
-    AbrigosTestCase.class, 
+    AbrigosTestCase.class,
     CentroDistribuicaoTestCase.class,
-    UsuariosTestCase.class,
     DoacaoTestCase.class,
-    EstoqueTestCase.class
+    EstoqueTestCase.class,
+    PedidosTestCase.class,
+    UsuariosTestCase.class
 })
 @IncludeTags({"Regressao"})
 public class RegressaoTestSuite {
