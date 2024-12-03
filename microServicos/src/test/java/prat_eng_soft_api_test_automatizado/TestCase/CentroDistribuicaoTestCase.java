@@ -12,23 +12,15 @@ import org.junit.jupiter.api.Tag;
 
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
-import prat_eng_soft_api_test_automatizado.TestCase.models.CentroDistribuicao;
-import prat_eng_soft_api_test_automatizado.TestCase.models.CentroDistribuicaoAddress;
 import prat_eng_soft_api_test_automatizado.Validation.GenericValidation;
-import prat_eng_soft_api_test_automatizado.utils.ConexaoBancoDados;
+import prat_eng_soft_api_test_automatizado.service.CentroDistribuicaoService;
 import prat_eng_soft_api_test_automatizado.utils.ContratoManager;
 
 @TestMethodOrder(OrderAnnotation.class)
-public class CentroDistribuicaoTestCase extends BaseTestCase {
+public class CentroDistribuicaoTestCase {
 
-    private GenericValidation genericValidation;
-    private ConexaoBancoDados conexaoBancoDados;
-
-    public CentroDistribuicaoTestCase() {
-        super("cd", "/v1/cds");
-        genericValidation = new GenericValidation();
-        conexaoBancoDados = new ConexaoBancoDados();
-    }
+    private GenericValidation genericValidation = new GenericValidation();
+    private CentroDistribuicaoService centroDistribuicaoService = new CentroDistribuicaoService();
 
     /*
      * @BeforeAll
@@ -52,7 +44,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     @Order(1)
     public void listarTodosCDs() {
         Allure.description("Teste para validar a listagem de todos os Centros de Distribuições já cadastrados");
-        Response resposta = genericService.get();
+        Response resposta = centroDistribuicaoService.casoFelizListarTodosCentrosDistribuicao();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("ListarCDs"));
@@ -64,8 +56,7 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     @Order(2)
     public void listarCDsPeloCodigo() {
         Allure.description("Teste para validar a listagem de um Centro de Distribuição pelo seu código");
-        genericService.addQueryParams("codCD", 1);
-        Response resposta = genericService.get();
+        Response resposta = centroDistribuicaoService.casoFelizDeListarCentroDistribuicaoPeloCodigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("ListarCDCodigoOuNome"));
@@ -77,12 +68,22 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     @Order(3)
     public void listarCDsPeloNome() {
         Allure.description("Teste para validar a listagem de um Centro de Distribuição pelo seu nome");
-        genericService.addQueryParams("nameCD", "Cho-Gath");
-        Response resposta = genericService.get();
+        Response resposta = centroDistribuicaoService.casoFelizDeListarCentroDistribuicaoPeloNome();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("ListarCDCodigoOuNome"));
+    }
 
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Listar Centro de Distribuição pelo nome e pelo seu código")
+    @Tag("Regressao")
+    @Order(4)
+    public void listarCDsPeloNomeECd() {
+        Allure.description("Teste para validar a listagem de um Centro de Distribuição pelo seu nome");
+        Response resposta = centroDistribuicaoService.casoFelizDeListarCentroDistribuicaoPeloNomeECodigo();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarContrato(ContratoManager.getContrato("ListarCDCodigoOuNome"));
     }
 
     @Test
@@ -91,59 +92,128 @@ public class CentroDistribuicaoTestCase extends BaseTestCase {
     @Order(4)
     public void adicionarCD() {
         Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição");
-
-        CentroDistribuicao centroDistribuicaoDTO = CentroDistribuicao.criarCentroDistribuicao();
-
-        genericService.setBody(centroDistribuicaoDTO);
-
-        Response resposta = genericService.post();
+        Response resposta = centroDistribuicaoService.casoFelizAdcionarCentroDistribuicao();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("IncluirCD"));
-        conexaoBancoDados.encontrarCD(resposta.jsonPath().getString("code"));
-
     }
 
-    // Falta incluir os testes de cenaŕio de erro
-
+    // Erros
     @Test
-    @DisplayName("Micro Serviço de Centro Distribuição = validar erro ao tentar criar um Centro de Distribuição sem informar o telefone")
-    @Tag("Regressao")
-    @Order(5)
-    public void validarErroCDSemTelefone() {
-        Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição sem informar o telefone");
-
-        CentroDistribuicao centroDistribuicaoDTO = CentroDistribuicao.criarCentroDistribuicao();
-        centroDistribuicaoDTO.setPhone("");
-
-        genericService.setBody(centroDistribuicaoDTO);
-
-        Response resposta = genericService.post();
-        genericValidation.setResponse(resposta);
-        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Phone is required");
-        genericValidation.validarContrato(ContratoManager.getContrato("CdsErro"));
-    }
-
-    @Test
-    @DisplayName("Micro Serviço de Centro Distribuição = validar erro ao tentar criar um Centro de Distribuição sem informar a vizinhança")
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem nome")
     @Tag("Regressao")
     @Order(6)
-    public void validarErroCDSemVizinhanca() {
-        Allure.description("Teste para validar a inclusão de um novo Centro de Distribuição sem informar a vizinhança");
-
-        CentroDistribuicaoAddress endereco = CentroDistribuicaoAddress.criarEndereco();
-        endereco.setNeighborhood("");
-
-        CentroDistribuicao centroDistribuicaoDTO = CentroDistribuicao.criarCentroDistribuicao();
-        centroDistribuicaoDTO.setAddress(endereco);
-
-        genericService.setBody(centroDistribuicaoDTO);
-
-        Response resposta = genericService.post();
+    public void validarErroCdSemNome() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem nome");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemNome();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
-        genericValidation.validarCampo("errors[0]", "Neighborhood is required");
-        genericValidation.validarContrato(ContratoManager.getContrato("CdsErro"));
+        genericValidation.validarMensagem("errors[0]", "Name is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Telefone do Abrigo")
+    @Tag("Regressao")
+    @Order(7)
+    public void validarErroABrigoSemInformarTelefone() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Telefone do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemTelefone();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Phone is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Email do Abrigo")
+    @Tag("Regressao")
+    @Order(8)
+    public void validarErroABrigoSemEmail() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Email do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemEmail();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Email is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Pais do Abrigo")
+    @Tag("Regressao")
+    @Order(9)
+    public void validarErroABrigoSemPais() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Pais do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemPais();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Country is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Estado do Abrigo")
+    @Tag("Regressao")
+    @Order(10)
+    public void validarErroABrigoSemEstado() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Estado do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemEstado();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "State is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar a Cidade do Abrigo")
+    @Tag("Regressao")
+    @Order(11)
+    public void validarErroABrigoSemCidade() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar a Cidade do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemCidade();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "City is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Bairo do Abrigo")
+    @Tag("Regressao")
+    @Order(12)
+    public void validarErroABrigoSemBairro() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Bairro do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemBairro();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Neighborhood is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar a Rua do Abrigo")
+    @Tag("Regressao")
+    @Order(13)
+    public void validarErroABrigoSemRua() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar a Rua do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemRua();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Street is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Centro Distribuição = Validar erro ao tentar criar um abrigo sem informar o Numero do Abrigo")
+    @Tag("Regressao")
+    @Order(14)
+    public void validarErroABrigoSemNumero() {
+        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Numero do Abrigo");
+        Response resposta = centroDistribuicaoService.casoErroCriarCentroDistribuicaoSemNumero();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
+        genericValidation.validarMensagem("errors[0]", "Number is required");
+        genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
 }
