@@ -25,6 +25,16 @@ public class EstoqueService extends GenericService {
         setBasePath("/v1/stock");
     }
 
+
+    public Response casoFelizEntradaStock(String CD){
+        montarRequisicao();
+        addPathParam("codCd", CD);
+        setBody(Estoque.criarEstoqueEntradas());
+        setRota("/{codCd}");
+        return post();
+    }
+
+
     public Response casoFelizEntradaStock(){
         CentroDistribuicaoService centroDistribuicaoService = new CentroDistribuicaoService();
         Response response = centroDistribuicaoService.casoFelizAdcionarCentroDistribuicao();
