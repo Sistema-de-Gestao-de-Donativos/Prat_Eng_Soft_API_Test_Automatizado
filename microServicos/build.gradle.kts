@@ -84,6 +84,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync
     implementation("org.mongodb:mongodb-driver-sync:5.2.0")
 
+implementation("com.auth0:java-jwt:3.18.2") // Verifique se há uma versão mais recente
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.68") // Verifique se há uma versão mais recente
 
 }
 
