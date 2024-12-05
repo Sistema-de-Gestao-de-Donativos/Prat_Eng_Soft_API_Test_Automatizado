@@ -23,7 +23,18 @@ public class CentroDistribuicaoService extends GenericService {
         return propriedades.getProperty("cd");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenJava");
+    }
+
     private void montarRequisicao() {
+        setToken(getToken());
         setBaseUri(getBaseUri());
         setBasePath("/v1");
         setRota("/cds");
@@ -160,6 +171,18 @@ public class CentroDistribuicaoService extends GenericService {
         montarRequisicao();
         CentroDistribuicaoSemNumero centroDistribuicaoSemNumero = CentroDistribuicaoSemNumero.criarCentroDistribuicaoSemNumero();
         setBody(centroDistribuicaoSemNumero);
+        return post();
+    }
+
+    public Response casoErroCriarCentroDistribuicaoSemToken() {
+        montarRequisicao();
+        removeHeader("Authorization");
+        return post();
+    }
+
+    public Response casoErroCriarCentroDistribuicaoComTokenInvalido() {
+        montarRequisicao();
+        setToken("tokenInvalido");
         return post();
     }
 
