@@ -43,7 +43,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(1)
     public void listarTodosAbrigos(TestInfo testInfo) {
-        Allure.description("Teste para validar a listagem de todos os abrigos já cadastrados");
+        Allure.description("Primeiro se faz uma requisição para adcionar um abrigo e depois se faz a requisição para listar todos os abrigos, desta forma garantimos que sempre teremos ao menos um abrigo cadastrado para ser listado");
         Response resposta = abrigoService.casoFelizListarTodosAbrigos();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -55,7 +55,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(2)
     public void listarAbrigoPeloCodigo() {
-        Allure.description("Teste para validar a listagem de um abrigo pelo seu código");
+        Allure.description("Primeiro se faz uma requisição para adcionar um abrigo e depois se faz a requisição para listar o abrigo pelo seu código, desta forma garantimos que sempre teremos ao menos um abrigo cadastrado para ser listado");
         Response resposta = abrigoService.casoFelizDeListarAbrigoPeloCodigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -67,7 +67,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(3)
     public void listarAbrigoPeloNome() {
-        Allure.description("Teste para validar a listagem de um Abrigo pelo seu nome");
+        Allure.description("Primeiro se faz uma requisição para adcionar um abrigo e depois se faz a requisição para listar o abrigo pelo seu nome, desta forma garantimos que sempre teremos ao menos um abrigo cadastrado para ser listado");
         Response resposta = abrigoService.casoFelizDeListarAbrigoPeloNome();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -79,7 +79,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(4)
     public void listarAbrigoPeloNomeEpeloCodigo() {
-        Allure.description("Teste para validar a listagem de um Abrigo pelo seu nome e codigo");
+        Allure.description("Primeiro se faz uma requisição para adcionar um abrigo e depois se faz a requisição para listar o abrigo pelo seu nome e código, desta forma garantimos que sempre teremos ao menos um abrigo cadastrado para ser listado");
         Response resposta = abrigoService.casoFelizDeListarAbrigoPeloNomeECodigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -91,7 +91,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(5)
     public void adicionarAbrigo() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo, os dados são gerados de forma aleatória");
         Response resposta = abrigoService.casoFelizDeAdcionarAbrigo();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -104,7 +104,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(6)
     public void validarErroABrigoSemNome() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem nome");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o nome do abrigo, o esperado é que o sistema retorne um erro informando que o nome é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemNome();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -117,7 +117,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(7)
     public void validarErroABrigoSemInformarTelefone() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Telefone do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Telefone do abrigo, o esperado é que o sistema retorne um erro informando que o Telefone é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemTelefone();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -130,7 +130,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(8)
     public void validarErroABrigoSemEmail() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Email do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Email do abrigo, o esperado é que o sistema retorne um erro informando que o Email é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemEmail();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -143,7 +143,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(9)
     public void validarErroABrigoSemPais() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Pais do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Pais do abrigo, o esperado é que o sistema retorne um erro informando que o Pais é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemPais();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -156,7 +156,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(10)
     public void validarErroABrigoSemEstado() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Estado do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Estado do abrigo, o esperado é que o sistema retorne um erro informando que o Estado é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemEstado();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -169,7 +169,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(11)
     public void validarErroABrigoSemCidade() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar a Cidade do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar a Cidade do abrigo, o esperado é que o sistema retorne um erro informando que a Cidade é obrigatória");
         Response resposta = abrigoService.casoErroCriarAbrigoSemCidade();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -178,11 +178,11 @@ public class AbrigosTestCase {
     }
 
     @Test
-    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar criar um abrigo sem informar o Bairo do Abrigo")
+    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar criar um abrigo sem informar o Bairro do Abrigo")
     @Tag("Regressao")
     @Order(12)
     public void validarErroABrigoSemBairro() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Bairro do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Bairro do abrigo, o esperado é que o sistema retorne um erro informando que o Bairro é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemBairro();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -195,7 +195,7 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(13)
     public void validarErroABrigoSemRua() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar a Rua do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar a Rua do abrigo, o esperado é que o sistema retorne um erro informando que a Rua é obrigatória");
         Response resposta = abrigoService.casoErroCriarAbrigoSemRua();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
@@ -208,12 +208,34 @@ public class AbrigosTestCase {
     @Tag("Regressao")
     @Order(14)
     public void validarErroABrigoSemNumero() {
-        Allure.description("Teste para validar a inclusão de um novo Abrigo sem informar o Numero do Abrigo");
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o Numero do abrigo, o esperado é que o sistema retorne um erro informando que o Numero é obrigatório");
         Response resposta = abrigoService.casoErroCriarAbrigoSemNumero();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_BAD_REQUEST);
         genericValidation.validarMensagem("errors[0]", "Number is required");
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar fazer uma requisição sem informar o token")
+    @Tag("Regressao")
+    @Order(15)
+    public void validarErroSemToken() {
+        Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o token, o esperado é que o sistema retorne um erro informando que o token é obrigatório");
+        Response resposta = abrigoService.casoErroSemToken();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_FORBIDDEN);
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar fazer uma requisição com token inválido")
+    @Tag("Regressao")
+    @Order(16)
+    public void validarErroTokenInvalido() {
+        Allure.description("Se faz uma requisição para adicionar um abrigo com um token inválido, o esperado é que o sistema retorne um erro informando que o token é inválido");
+        Response resposta = abrigoService.casoErroTokenInvalido();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
 }
