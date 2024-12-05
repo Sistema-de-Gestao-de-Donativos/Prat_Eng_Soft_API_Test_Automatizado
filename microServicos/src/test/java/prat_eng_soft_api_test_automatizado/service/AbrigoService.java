@@ -24,9 +24,20 @@ public class AbrigoService extends GenericService {
         return propriedades.getProperty("abrigo");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenJava");
+    }
+
     private void montarRequisicao() {
         setBaseUri(getBaseUri());
         setBasePath("/v1");
+        setToken(getToken());
         setRota("/abrigos");
     }
 
@@ -163,6 +174,22 @@ public class AbrigoService extends GenericService {
         montarRequisicao();
         AbrigoSemNumero abrigoSemNumeroDTO = AbrigoSemNumero.criarAbrigo();
         setBody(abrigoSemNumeroDTO);
+        return post();
+    }
+
+    public Response casoErroSemToken() {
+        montarRequisicao();
+        abrigoDTO = Abrigo.criarAbrigo();
+        setBody(abrigoDTO);
+        removeHeader("Authorization");
+        return post();
+    }
+
+    public Response casoErroTokenInvalido() {
+        montarRequisicao();
+        abrigoDTO = Abrigo.criarAbrigo();
+        setBody(abrigoDTO);
+        setToken("tokenInvalido");
         return post();
     }
 
