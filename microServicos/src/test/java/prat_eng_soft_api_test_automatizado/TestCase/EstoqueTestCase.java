@@ -2,6 +2,7 @@ package prat_eng_soft_api_test_automatizado.TestCase;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
@@ -205,6 +206,31 @@ public class EstoqueTestCase {
     genericValidation.validarStatusCode(HttpStatus.SC_NOT_FOUND);
     genericValidation.validarMensagem("detail", "Item not found or insufficient quantity");
     genericValidation.validarContrato(ContratoManager.getContrato("deletarItemNaoEncontrado"));
+  }
+
+  @Test
+  @DisplayName("Micro Serviço de Estoque = Validar erro ao Incluir nova entrada de Itens no Estoque sem informar o token")
+  @Tag("Regressao")
+  @Order(6)
+  @Disabled("Falta atualizar o servidor com a versão correta")
+  public void buscarDoadorSemToken() {
+    Allure.description("Teste para validar erro ao Incluir nova entrada de Itens no Estoque sem informar o token");
+    Response resposta = estoqueService.casoErroConsultaSEmToken("2");
+    genericValidation.setResponse(resposta);
+    genericValidation.validarStatusCode(HttpStatus.SC_FORBIDDEN);
+  }
+
+  @Test
+  @DisplayName("Micro Serviço de Estoque = Validar erro ao erro ao Incluir nova entrada de Itens no Estoque sem informar o token informando o token inválido")
+  @Tag("Regressao")
+  @Order(7)
+  @Disabled("Falta atualizar o servidor com a versão correta")
+  public void buscarDoadorComTokenInvalido() {
+    Allure.description(
+        "Teste para validar erro ao Incluir nova entrada de Itens no Estoque sem informar o token informando um token inválido");
+    Response resposta = estoqueService.casoErroConsultaComTokenInvalido("3");
+    genericValidation.setResponse(resposta);
+    genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
   }
 
 }

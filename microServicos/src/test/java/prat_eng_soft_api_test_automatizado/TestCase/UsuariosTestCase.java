@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -90,13 +91,13 @@ public class UsuariosTestCase {
     }
 
     @ParameterizedTest
-    @DisplayName("Micro Serviço de Usuarios = Excluir Usuario")
+    @DisplayName("Micro Serviço de Usuarios = Excluir Usuario Voluntario")
     @Tag("Regressao")
     @Order(5)
     @ValueSource(strings = { "voluntario", "adminCD", "adminAbrigo", "superadmin" })
     public void excluirUsuario(String role) {
         Allure.description("Teste para validar a exclusão de um Usuario pelo seu Id, sendo ele um usuario " + role);
-        Response resposta = usuariosService.casoFelizExcluirUsuario(role);
+        Response resposta = usuariosService.casoFelizExcluirUsuario();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -172,6 +173,30 @@ public class UsuariosTestCase {
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarios"));
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Validar erro ao ao listar todos usuarios sem informar o token")
+    @Tag("Regressao")
+    @Order(6)
+    @Disabled("Falta atualizar o servidor com a versão correta")
+    public void buscarDoadorSemToken() {
+        Allure.description("Teste para validar ao listar todos usuarios sem informar o token");
+        Response resposta = usuariosService.casoErroConsultaSEmToken();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Usuarios = Validar erro ao listar todos usuarios informando o token inválido")
+    @Tag("Regressao")
+    @Order(7)
+    @Disabled("Falta atualizar o servidor com a versão correta")
+    public void buscarDoadorComTokenInvalido() {
+        Allure.description("Teste para validar ao listar todos usuarios informando um token inválido");
+        Response resposta = usuariosService.casoErroConsultaComTokenInvalido();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
 }

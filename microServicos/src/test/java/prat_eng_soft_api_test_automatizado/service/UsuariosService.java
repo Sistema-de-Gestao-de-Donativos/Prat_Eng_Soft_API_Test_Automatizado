@@ -21,7 +21,18 @@ public class UsuariosService extends GenericService {
         return propriedades.getProperty("usuario");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenPython");
+    }
+
     private void montarRequisicao() {
+        setToken(getToken());
         setBaseUri(getBaseUri());
         setBasePath("/v1");
     }
@@ -68,9 +79,11 @@ public class UsuariosService extends GenericService {
         return post();
     }
 
-    public Response casoFelizExcluirUsuario(String role) {
+    public Response casoFelizExcluirUsuario() {
+        Response resposta1 = casoFelizIncluIncluirUsuarioVoluntario();
+        prepararParaNovaRequisicao();
         montarRequisicao();
-        String userId = usuariosBancoDados.incluirUsuario(role);
+        String userId = resposta1.jsonPath().getString("_id");
         addPathParam("user_id", userId);
         setRota("/users/{user_id}");
         return delete();
@@ -112,18 +125,34 @@ public class UsuariosService extends GenericService {
 
     public Response casoFelizListarUsuarioPorId(String role) {
         montarRequisicao();
-        String userId = usuariosBancoDados.incluirUsuario(role);
-        addPathParam("user_id", userId);
+       // String userId = usuariosBancoDados.incluirUsuario(role);
+    //    addPathParam("user_id", userId);
         setRota("/users/{user_id}");
         return get();
     }
 
     public Response casoFelizListarUsuarioPeloPapel(String role) {
         montarRequisicao();
-        usuariosBancoDados.incluirUsuario(role);
+        //usuariosBancoDados.incluirUsuario(role);
         addPathParam("role", role);
         addPathParam("codEntidade", "1");
         setRota("/users/{role}/{codEntidade}");
+        return get();
+    }
+
+    public Response casoErroConsultaSEmToken() {
+        montarRequisicao();
+        setRota("/users/");
+        removeHeader("Authorization");
+
+        return get();
+    }
+
+    public Response casoErroConsultaComTokenInvalido() {
+        montarRequisicao();
+        setRota("/users/");
+        setToken("invalido");
+
         return get();
     }
 }

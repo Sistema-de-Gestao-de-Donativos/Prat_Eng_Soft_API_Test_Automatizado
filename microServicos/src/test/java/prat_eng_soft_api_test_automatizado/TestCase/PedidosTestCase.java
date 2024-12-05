@@ -2,6 +2,7 @@ package prat_eng_soft_api_test_automatizado.TestCase;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
@@ -69,5 +70,30 @@ public class PedidosTestCase {
         genericValidation.setResponse(response);
         genericValidation.validarStatusCode(HttpStatus.SC_NO_CONTENT);
     }
+
+    @Test
+    @DisplayName("Micro Serviço de Pedidos = Validar erro ao Consultar pedidos sem informar o token")
+    @Tag("Regressao")
+    @Order(6)
+    @Disabled("Falta atualizar o servidor com a versão correta")
+    public void buscarDoadorSemToken() {
+        Allure.description("Teste para validar a Consultar pedidos sem informar o token");
+        Response resposta = pedidosService.casoErroConsultaSEmToken();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_FORBIDDEN);
+    }
+  
+    @Test
+    @DisplayName("Micro Serviço de Pedidos = Validar erro ao Consultar pedidos informando o token inválido")
+    @Tag("Regressao")
+    @Order(7)
+    @Disabled("Falta atualizar o servidor com a versão correta")
+    public void buscarDoadorComTokenInvalido() {
+        Allure.description("Teste para validar a Consultar pedidos informando um token inválido");
+        Response resposta = pedidosService.casoErroConsultaComTokenInvalido();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
+    }
+
 
 }

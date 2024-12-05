@@ -27,7 +27,7 @@ public class EstoqueService extends GenericService {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
         }
-        return propriedades.getProperty("tokenJava");
+        return propriedades.getProperty("tokenPython");
     }
 
 
@@ -36,6 +36,7 @@ public class EstoqueService extends GenericService {
         setBaseUri(getBaseUri());
         setBasePath("/v1/stock");
     }
+
 
 
     public Response casoFelizEntradaStock(String CD){
@@ -190,6 +191,26 @@ public class EstoqueService extends GenericService {
         addQueryParams("qtd", 1);
         return delete();
     }
+
+    public Response casoErroConsultaSEmToken(String CD){
+        montarRequisicao();
+        addPathParam("codCd", CD);
+        setBody(Estoque.criarEstoqueEntradas());
+        setRota("/{codCd}");
+        removeHeader("Authorization");
+        return post();
+    }
+
+    public Response casoErroConsultaComTokenInvalido(String CD){
+        montarRequisicao();
+        addPathParam("codCd", CD);
+        setBody(Estoque.criarEstoqueEntradas());
+        setRota("/{codCd}");
+        setToken("invalido");
+        return post();
+    }
+
+
 
 
     

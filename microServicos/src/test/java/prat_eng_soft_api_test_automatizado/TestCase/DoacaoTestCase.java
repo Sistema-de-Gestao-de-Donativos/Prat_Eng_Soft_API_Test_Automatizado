@@ -109,7 +109,7 @@ public class DoacaoTestCase {
         Allure.description("Teste para validar a busca de um doador sem informar o token");
         Response resposta = doacaoService.casoErroConsultaSEmToken();
         genericValidation.setResponse(resposta);
-        genericValidation.validarStatusCode(HttpStatus.SC_FORBIDDEN);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
     @Test

@@ -21,7 +21,18 @@ public class PedidosService extends GenericService {
         return propriedades.getProperty("pedidos");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenJava");
+    }
+
     private void montarRequisicao() {
+        setToken(getToken());
         setBaseUri(getBaseUri());
         setBasePath("/v1/pedidos");
     }
@@ -57,6 +68,19 @@ public class PedidosService extends GenericService {
 
     public Response casoFelizConsultarPedido() {
         montarRequisicao();
+        return get();
+    }
+
+    public Response casoErroConsultaSEmToken() {
+        montarRequisicao();
+        removeHeader("Authorization");
+
+        return get();
+    }
+
+    public Response casoErroConsultaComTokenInvalido() {
+        montarRequisicao();
+        setToken("invalido");
         return get();
     }
 

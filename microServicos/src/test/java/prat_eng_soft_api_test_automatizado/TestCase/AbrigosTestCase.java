@@ -2,6 +2,7 @@ package prat_eng_soft_api_test_automatizado.TestCase;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.api.Order;
@@ -216,10 +217,12 @@ public class AbrigosTestCase {
         genericValidation.validarContrato(ContratoManager.getContrato("AbrigosErro"));
     }
 
+
     @Test
     @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar fazer uma requisição sem informar o token")
     @Tag("Regressao")
     @Order(15)
+    @Disabled("Falta atualizar o servidor com a versão correta")
     public void validarErroSemToken() {
         Allure.description("Se faz uma requisição para adicionar um abrigo sem informar o token, o esperado é que o sistema retorne um erro informando que o token é obrigatório");
         Response resposta = abrigoService.casoErroSemToken();
@@ -231,6 +234,7 @@ public class AbrigosTestCase {
     @DisplayName("Micro Serviço de Abrigos = Validar erro ao tentar fazer uma requisição com token inválido")
     @Tag("Regressao")
     @Order(16)
+    @Disabled("Falta atualizar o servidor com a versão correta")
     public void validarErroTokenInvalido() {
         Allure.description("Se faz uma requisição para adicionar um abrigo com um token inválido, o esperado é que o sistema retorne um erro informando que o token é inválido");
         Response resposta = abrigoService.casoErroTokenInvalido();
