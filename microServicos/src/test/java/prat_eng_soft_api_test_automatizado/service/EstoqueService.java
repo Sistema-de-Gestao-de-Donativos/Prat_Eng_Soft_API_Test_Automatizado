@@ -20,7 +20,19 @@ public class EstoqueService extends GenericService {
         return propriedades.getProperty("estoque");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenJava");
+    }
+
+
     private void montarRequisicao() {
+        setToken(getToken());
         setBaseUri(getBaseUri());
         setBasePath("/v1/stock");
     }
@@ -70,6 +82,7 @@ public class EstoqueService extends GenericService {
         String codCdString = response.jsonPath().getString("[0].quantidade");
         int quantidade = Integer.parseInt(codCdString);
         addQueryParams("qtd", quantidade);
+        addQueryParams("codBarras", "1234443343343344");
         return delete();
     }
 

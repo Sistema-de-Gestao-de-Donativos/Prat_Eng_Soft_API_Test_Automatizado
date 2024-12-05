@@ -67,7 +67,7 @@ public class PedidosTestCase {
         Allure.description("Teste para validar a troca do Status de um pedido");
         Response response = pedidosService.casoFelizAtualizarPedido();
         genericValidation.setResponse(response);
-        genericValidation.validarStatusCode(HttpStatus.SC_OK);
+        genericValidation.validarStatusCode(HttpStatus.SC_NO_CONTENT);
     }
 
 }

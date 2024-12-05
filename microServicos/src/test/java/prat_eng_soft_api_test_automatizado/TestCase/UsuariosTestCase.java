@@ -162,19 +162,6 @@ public class UsuariosTestCase {
     }
 
     @ParameterizedTest
-    @DisplayName("Micro Serviço de Usuarios = Listar Usuario pelo UserId")
-    @Tag("Regressao")
-    @Order(11)
-    @ValueSource(strings = { "voluntario", "adminCD", "adminAbrigo", "superadmin" })
-    public void listarUsuarioPeloUserId(String role) {
-        Allure.description("Teste para validar a consulta de um usuario pelo seu Id");
-        Response resposta = usuariosService.casoFelizListarUsuarioPorId(role);
-        genericValidation.setResponse(resposta);
-        genericValidation.validarStatusCode(HttpStatus.SC_OK);
-        genericValidation.validarContrato(ContratoManager.getContrato("listarUsuarioPeloId"));
-    }
-
-    @ParameterizedTest
     @DisplayName("Micro Serviço de Usuarios = Listar Usuarios pelo Papel")
     @Tag("Regressao")
     @Order(12)

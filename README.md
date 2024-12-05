@@ -5,8 +5,6 @@ Todos os cenários de testes se baseiam na cobertura daquilo que é informado no
 ## Casos de testes para cada microserviço
 
 ### ABRIGO
-14 casos de Teste:
-
 **Casos Felizes**
 1. Listar todos os Abrigos
 2. Listar Abrigo pelo código
@@ -24,6 +22,8 @@ Todos os cenários de testes se baseiam na cobertura daquilo que é informado no
 7. Criação de Abrigo sem informar o Bairro do Abrigo
 8. Criação de Abrigo sem informar o Endereço do Abrigo
 9. Criação de Abrigo sem informar o número
+10. Validar erro ao tentar criar Abrigo sem informar o Token
+11. Validar erro ao tentar criar Abrigo informando um token invalido
 
 ### CENTRO DE DISTRIBUIÇÃO
 Casos Felizes
@@ -41,6 +41,8 @@ Casos Felizes
 7. Criação de Centro de Distribuição sem informar o Bairro do Centro
 8. Criação de Centro de Distribuição sem informar o Endereço do Centro
 9. Criação de Centro de Distribuição sem informar o número
+10. Validar erro ao tentar criar Centro de Distribuição sem informar o Token
+11. Validar erro ao tentar criar Centro de Distribuição informando um token invalido
 
 ### USUÁRIO
 Casos Felizes
