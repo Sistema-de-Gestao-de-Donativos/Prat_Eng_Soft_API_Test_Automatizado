@@ -43,7 +43,7 @@ public class DoacaoTestCase {
     @Tag("Regressao")
     @Order(1)
     public void criarDoador() {
-        Allure.description("Teste para validar a criação de um novo Doador");
+        Allure.description("Teste para validar a criação de um novo Doador, dados gerados aleatoriamente");
         Response resposta = doacaoService.casoFelizIncluirDoador();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -55,7 +55,7 @@ public class DoacaoTestCase {
     @Tag("Regressao")
     @Order(2)
     public void buscarDoadorPeloEmail() {
-        Allure.description("Teste para validar a busca de um doador pelo email");
+        Allure.description("Se faz uma requisição para criar um doador e depois busca-lo pelo email");
         Response resposta = doacaoService.casoFelizConsultarDoadorPeloEmail();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -67,7 +67,8 @@ public class DoacaoTestCase {
     @Tag("Regressao")
     @Order(3)
     public void enviarDoacao() {
-        Allure.description("Teste para validar o envio de uma Doação");
+        Allure.description(
+                "Teste para validar o envio de uma Doação, primeiro se criar um doador, após isso, se cria o item no estoque e por fim se envia a doação");
         Response resposta = doacaoService.casoFelizIncluirDoacao();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_CREATED);
@@ -79,7 +80,8 @@ public class DoacaoTestCase {
     @Tag("Regressao")
     @Order(4)
     public void buscarDoacaoPeloId() {
-        Allure.description("Teste para validar a busca de uma doação pelo idDoacao");
+        Allure.description(
+                "Teste para validar a busca de uma doação pelo idDoacao, antes se envia uma doação e após se busca pelo id");
         Response resposta = doacaoService.casoFelizBuscarDoacaoPeloId();
         genericValidation.setResponse(resposta);
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
@@ -97,6 +99,28 @@ public class DoacaoTestCase {
         genericValidation.validarStatusCode(HttpStatus.SC_OK);
         genericValidation.validarContrato(ContratoManager.getContrato("buscarDoacaoPelaData"));
 
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Doação = Validar erro ao buscar doador sem informar o token")
+    @Tag("Regressao")
+    @Order(6)
+    public void buscarDoadorSemToken() {
+        Allure.description("Teste para validar a busca de um doador sem informar o token");
+        Response resposta = doacaoService.casoErroConsultaSEmToken();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_FORBIDDEN);
+    }
+
+    @Test
+    @DisplayName("Micro Serviço de Doação = Validar erro ao buscar doador informando o token inválido")
+    @Tag("Regressao")
+    @Order(7)
+    public void buscarDoadorComTokenInvalido() {
+        Allure.description("Teste para validar a busca de um doador informando um token inválido");
+        Response resposta = doacaoService.casoErroConsultaComTokenInvalido();
+        genericValidation.setResponse(resposta);
+        genericValidation.validarStatusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
 }
