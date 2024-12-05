@@ -39,6 +39,18 @@ public class GenericService {
         this.requestSpecBuilder.setBasePath(basePath);
     }
 
+    public void removeHeader(String key) {
+        this.headers.remove(key);
+    }
+
+    public void removePathParam(String key) {
+        this.pathParams.remove(key);
+    }
+
+    public void removeQueryParams(String key) {
+        this.queryParams.remove(key);
+    }
+
     public void addHeader(String key, Object value) {
         this.headers.put(key, value);
     }
@@ -57,6 +69,10 @@ public class GenericService {
 
     public void setBody(Object body) {
         this.body = body;
+    }
+
+    public void setToken(String token) {
+        this.headers.put("Authorization", "Bearer " + token);
     }
 
     public void prepararParaNovaRequisicao() {
@@ -83,6 +99,10 @@ public class GenericService {
                     .pathParams(this.pathParams)
                     .queryParams(this.queryParams)
                     .headers(this.headers)
+                    //.auth().preemptive().oauth2("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJKb2huIERvZSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTgxNjIzOTAyMn0.h5il33HQmf24lmyomZHarCQYhaeErSixVHlwzY7iCmq7aZ644IzkIeHcG4JmaK8tmh1187oJURDIX5lMdkKcpFojqroFXIg3nVUwo-B16L7sWaamzzaM2EZT2DJXTjYx0KaFbDqTWzkZN-16Z482miqg7v-UbvHDbZpHfTri28ZhaLbVJ4qgNxM8jhD-ZDtV6iVyP473xTVwk7oTsW2dH-Iimc-AeGtYCVUDDXM0BeiapHYRzG6lC1l6IMJEeOHR50-GHaQtDx8wzc1cpZoXzjlrBZjgpl9tOdV24kaWELG-lIMsMjDPpFriKpMVvUK9_trxjfbv14Eog61ilZNvJA")
+                    //.auth().preemptive().oauth2("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJKb2huIERvZSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTgxNjIzOTAyMn0.h5il33HQmf24lmyomZHarCQYhaeErSixVHlwzY7iCmq7aZ644IzkIeHcG4JmaK8tmh1187oJURDIX5lMdkKcpFojqroFXIg3nVUwo-B16L7sWaamzzaM2EZT2DJXTjYx0KaFbDqTWzkZN-16Z482miqg7v-UbvHDbZpHfTri28ZhaLbVJ4qgNxM8jhD-ZDtV6iVyP473xTVwk7oTsW2dH-Iimc-AeGtYCVUDDXM0BeiapHYRzG6lC1l6IMJEeOHR50-GHaQtDx8wzc1cpZoXzjlrBZjgpl9tOdV24kaWELG-lIMsMjDPpFriKpMVvUK9_trxjfbv14Eog61ilZNvJA")
+                    //.auth().preemptive().oauth2("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzUxMGQwOTcwZjhiYmM3MDE2M2JlYTUiLCJlbWFpbCI6InRlc3RlbGVvQGV4YW1wbGUuY29tIiwicm9sZSI6InN1cGVyYWRtaW4iLCJleHAiOjE3MzM0NTg1ODR9.NIFpk3nrUcboPbmNXDRifiq3njeqUPcO3prqis4TO2tGOkiqddsGlVS9PiZTZPiNRj35cpY8vqWdZVSgavkEJ7W4opZYlR7v2O3jOs0uhVDL19A7NwGyr52jul7MVawFCBo4eomOn2EdABvOmUs-M6qFxDZ0vV3afPqcBr08joE")
+                    //.auth().preemptive().oauth2("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzQ4MDRhODNmM2MwNjYzZDg2YjBiNjUiLCJlbWFpbCI6ImFuYWNsYXJhLnZpZWlyYUBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsImV4cCI6MTczMzQ2NzYwMn0.MT-iAmUKsCZY3oPb1zKX64JgLGZgzItH7LBioLmqjyU5zbtws_ROqcU4B7U_TPtY1fojiNXkrFJde46zhpa8g2D23WteHjk14wxEph0WU9JO3n116L9BqHWPjo3PGD8DYjS5CCwxTkTJPNjRhoJJ5Fm_9lt_bOD-aQCLN7G2GZE")
                     .body(this.body)
                     .log().all()
                     .request(method, this.rota);
