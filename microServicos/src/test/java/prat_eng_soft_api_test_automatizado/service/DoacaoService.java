@@ -13,8 +13,8 @@ import prat_eng_soft_api_test_automatizado.utils.models.DoacaoItens;
 public class DoacaoService extends GenericService {
 
     private String email;
-  
-     private static String getBaseUri() {
+
+    private static String getBaseUri() {
         Properties propriedades;
         try {
             propriedades = ConexaoBancoDados.getProperties("rotas");
@@ -24,32 +24,43 @@ public class DoacaoService extends GenericService {
         return propriedades.getProperty("doacao");
     }
 
+    private static String getToken() {
+        Properties propriedades;
+        try {
+            propriedades = ConexaoBancoDados.getProperties("TOKEN");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar carregar arquivo com as Rotas", e);
+        }
+        return propriedades.getProperty("tokenJava");
+    }
+
     private void montarRequisicao() {
+        setToken(getToken());
         setBaseUri(getBaseUri());
         setBasePath("/v1");
     }
 
-    public Response casoFelizIncluirDoador(){
+    public Response casoFelizIncluirDoador() {
         montarRequisicao();
         DoacaoDoador doacaoDoador = DoacaoDoador.criarDoador();
-        email=doacaoDoador.getEmail();
+        email = doacaoDoador.getEmail();
         setBody(doacaoDoador);
         setRota("/doador");
         return post();
     }
 
-    public Response casoFelizConsultarDoadorPeloEmail(){
+    public Response casoFelizConsultarDoadorPeloEmail() {
         Response resposta = casoFelizIncluirDoador();
         resposta.then().statusCode(200);
         prepararParaNovaRequisicao();
         montarRequisicao();
-        String body = "{\"email\":\""+email+"\"}";
+        String body = "{\"email\":\"" + email + "\"}";
         setBody(body);
         setRota("/doador");
         return get();
     }
-    
-    public Response casoFelizIncluirDoacao(){
+
+    public Response casoFelizIncluirDoacao() {
         Response resposta = casoFelizIncluirDoador();
         resposta.then().statusCode(200);
         int idDoador = resposta.jsonPath().getInt("id");
@@ -75,25 +86,43 @@ public class DoacaoService extends GenericService {
         return post();
     }
 
-   public Response casoFelizBuscarDoacaoPeloId(){
+    public Response casoFelizBuscarDoacaoPeloId() {
         Response resposta = casoFelizIncluirDoacao();
         resposta.then().statusCode(201);
         prepararParaNovaRequisicao();
         montarRequisicao();
-        //addPathParam("idDoacao",resposta.jsonPath().getInt("id"));
-        addPathParam("idDoacao",1);
+        // addPathParam("idDoacao",resposta.jsonPath().getInt("id"));
+        addPathParam("idDoacao", 1);
         setRota("/doacao/{idDoacao}");
         return get();
     }
 
-    public Response casoFelizBuscarPelaData(){
+    public Response casoFelizBuscarPelaData() {
         Response resposta = casoFelizIncluirDoacao();
         resposta.then().statusCode(201);
         prepararParaNovaRequisicao();
         montarRequisicao();
-        addQueryParams("startDate","2024-10-10");
-        addQueryParams("endDate","2024-12-31");
+        addQueryParams("startDate", "2024-10-10");
+        addQueryParams("endDate", "2024-12-31");
         setRota("/doacao/date");
+        return get();
+    }
+
+    public Response casoErroConsultaSEmToken() {
+        montarRequisicao();
+        String body = "{\"email\":\"" + email + "\"}";
+        setBody(body);
+        setRota("/doador");
+        removeHeader("Authorization");
+        return get();
+    }
+
+    public Response casoErroConsultaComTokenInvalido() {
+        montarRequisicao();
+        String body = "{\"email\":\"" + email + "\"}";
+        setBody(body);
+        setRota("/doador");
+        setToken("tokenInvalido");
         return get();
     }
 }
